@@ -48,6 +48,9 @@ urlpatterns = [
 
     path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
 
+    path('proceed_to_pay',views.proceed_to_pay,name="proceed_to_pay" ),
+
+
 
 
 
