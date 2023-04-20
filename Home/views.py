@@ -291,7 +291,20 @@ def placeorder(request):
         except:
             pass
 
-
+        # if not Coupon.objects.filter(coupon_code=coupon_name).exists():
+        #     message = 'invalid coupon'
+        # else:
+        #     coupon_user = Coupon.objects.get(coupon_code=coupon_name)
+        #     if(Order.objects.filter(user=request.user,coupon__coupon_code =coupon_name).exists()):
+        #         message = 'Coupon already taken'
+        #     else:
+        #         if cart_total_price > coupon_user.discount_price:
+        #             cart_total_price -=coupon_user.discount_price
+        #             discount = cart_total_price
+        #             new_order.coupon.coupon_code =coupon_name
+        #             message = 'Coupon added'
+        #         else:
+        #             message = 'Buy above '+str(coupon_user.discount_price)
         print('-----------------------------------------------------------')
         print(message)
         print('-----------------------------------------------------------')
@@ -335,12 +348,7 @@ def placeorder(request):
         cartItems.objects.filter(user=request.user).delete()
 
         payMode = request.POST.get('payment_mode')
-
-
         pr_id = request.POST.get('payment_id')
-
-        if payMode == "COD":
-            return JsonResponse({'statusofcod' :"done"})
         name =  user_address.first_name + ' '+  user_address.last_name
         if payMode == 'Razorpay' or payMode == 'Razorpay+Wallet' :
             responsess = {
@@ -349,7 +357,7 @@ def placeorder(request):
             }
             print("payment done")
             return JsonResponse(responsess)
-        
+        return redirect('successful')
 
     else:
         return redirect('Home')

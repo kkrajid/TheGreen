@@ -443,7 +443,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         data: { 'payment_mode': 'Wallet',
         'coupon_name':coupon_code,
         'csrfmiddlewaretoken': '{{ csrf_token }}' },
-        success: function (responsofcod) {
+        success: function (responsofwall) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
           });
@@ -454,7 +454,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         url: '{% url "placeorder" %}',
         type: 'POST',
         data: { 'payment_mode': 'COD+Wallet','coupon_name':coupon_code, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
-        success: function (responsofcod) {
+        success: function (responsofcodw) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
           });
