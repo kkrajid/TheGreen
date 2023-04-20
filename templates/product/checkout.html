@@ -419,28 +419,18 @@ $(document).on('submit', '#coupon_form form', function(event) {
           rzp1.open();
         }
       });
-    } else if (paymentMethod === 'cod' && checkbox_status === 'unchecked') {
-      console.log("coddddd");
+    } else if (paymentMethod === 'cod' && checkbox_status === 'unchecked' ) {
+
       $.ajax({
-        url: '/cod_placeorder/',
+        url: '{% url "placeorder" %}',
         type: 'POST',
-        data: {
-          'payment_mode': 'COD',
-          'coupon_name': coupon_code,
-          'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
-        },
-        success: function (response) {
-          console.log(response);
+        data: { 'payment_mode': 'COD','coupon_name':coupon_code,'csrfmiddlewaretoken': '{{ csrf_token }}' },
+        success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
-            window.location.href = '/my_orders/';
+            window.location.href = '{% url "my_orders" %}'
           });
-        },
-        error: function (xhr, status, error) {
-          console.log(xhr.responseText);
-          swal('Oops!', 'Something went wrong. Please try again later.', 'error');
         }
       });
-    
     } else if (wallet_p === 'Wallet') {
       // let total_price_ = {{ total_price }};
       // let total_wallet_amount_ = {{ total_wallet_amount }};
