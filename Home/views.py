@@ -263,33 +263,33 @@ def placeorder(request):
         for item in cart:
             cart_total_price += item.products.selling_price*item.product_qty
 #------------------------------------------------------------------------------------------------
-        # coupon_name = request.POST.get('coupon_name')
-        # print('-----------------------------------------------------------')
-        # print(coupon_name)
-        # print('-----------------------------------------------------------')
-        # coup = Coupon.objects.filter(id=coupon_name).first()
-        # print(coup)
-        # message=0
+        coupon_name = request.POST.get('coupon_name')
+        print('-----------------------------------------------------------')
+        print(coupon_name)
+        print('-----------------------------------------------------------')
+        coup = Coupon.objects.filter(id=coupon_name).first()
+        print(coup)
+        message=0
         
-        # try:
-        #     coup = Coupon.objects.filter(id=coupon_name).first()
+        try:
+            coup = Coupon.objects.filter(id=coupon_name).first()
 
-        #     if coup :
-        #         rd = Order.objects.filter(user=request.user,coupon_id =coupon_name)
-        #         if rd:
-        #             message = 'Coupon already taken'
-        #         else:
-        #             if cart_total_price > coup.discount_price:
-        #                 discou =cart_total_price- coup.discount_price
-        #                 discount = discou
-        #                 new_order.coupon_id = int(coupon_name)
-        #                 message = 'Coupon added'
-        #             else:
-        #                 message = 'Buy above '+str(coup.discount_price)
-        #     else:
-        #         message = 'invalid coupon'
-        # except:
-        #     pass
+            if coup :
+                rd = Order.objects.filter(user=request.user,coupon_id =coupon_name)
+                if rd:
+                    message = 'Coupon already taken'
+                else:
+                    if cart_total_price > coup.discount_price:
+                        discou =cart_total_price- coup.discount_price
+                        discount = discou
+                        new_order.coupon_id = int(coupon_name)
+                        message = 'Coupon added'
+                    else:
+                        message = 'Buy above '+str(coup.discount_price)
+            else:
+                message = 'invalid coupon'
+        except:
+            pass
 
         # if not Coupon.objects.filter(coupon_code=coupon_name).exists():
         #     message = 'invalid coupon'
@@ -304,10 +304,10 @@ def placeorder(request):
         #             new_order.coupon.coupon_code =coupon_name
         #             message = 'Coupon added'
         #         else:
-        # #             message = 'Buy above '+str(coupon_user.discount_price)
-        # print('-----------------------------------------------------------')
-        # print(message)
-        # print('-----------------------------------------------------------')
+        #             message = 'Buy above '+str(coupon_user.discount_price)
+        print('-----------------------------------------------------------')
+        print(message)
+        print('-----------------------------------------------------------')
 #------------------------------------------------------------------------------------------------
         if payment_mode == 'Wallet':
             balance = cart_total_price*-1
@@ -681,47 +681,47 @@ def listing(request):
 
 
 
-# def coupon_discount(request):
-#     if request.method  == 'POST':
-#         if request.POST.get('couponValue') != 'NaN':
-#             val = request.POST.get('couponValue')
-#             print('------------------------------------')
-#             print(val)
-#             print('------------------------------------')
-#             cart = cartItems.objects.filter(user = request.user)
-#             total_price = 0
-#             message=0
-#             for item in cart:
-#                 total_price = total_price + item.products.selling_price*item.product_qty
-#             if not  Coupon.objects.filter(coupon_code=val).exists():
-#                 message = 'invalid coupon'
-#             else:
-#                 coupon_user = Coupon.objects.get(coupon_code=val)
-#                 if(Order.objects.filter(coupon__coupon_code =coupon_user.coupon_code).exists()):
-#                     message = 'Coupon already taken'
-#                 else:
-#                     coupon_user = Coupon.objects.get(coupon_code=val)
-#                     if total_price > coupon_user.discount_price:
-#                         total_price -=coupon_user.discount_price
-#                         message = 'Coupon added'
-#                     else:
-#                         message = 'Buy above '+str(coupon_user.discount_price)
+def coupon_discount(request):
+    if request.method  == 'POST':
+        if request.POST.get('couponValue') != 'NaN':
+            val = request.POST.get('couponValue')
+            print('------------------------------------')
+            print(val)
+            print('------------------------------------')
+            cart = cartItems.objects.filter(user = request.user)
+            total_price = 0
+            message=0
+            for item in cart:
+                total_price = total_price + item.products.selling_price*item.product_qty
+            if not  Coupon.objects.filter(coupon_code=val).exists():
+                message = 'invalid coupon'
+            else:
+                coupon_user = Coupon.objects.get(coupon_code=val)
+                if(Order.objects.filter(coupon__coupon_code =coupon_user.coupon_code).exists()):
+                    message = 'Coupon already taken'
+                else:
+                    coupon_user = Coupon.objects.get(coupon_code=val)
+                    if total_price > coupon_user.discount_price:
+                        total_price -=coupon_user.discount_price
+                        message = 'Coupon added'
+                    else:
+                        message = 'Buy above '+str(coupon_user.discount_price)
 
-#             total = {
-#                 'total_price':total_price,
-#                 'message':message,
-#                 'coupon_num' :coupon_user.id
-#             }
-#             return JsonResponse(total)
-#         else:
-#             cart = cartItems.objects.filter(user = request.user)
-#             total_price = 0
-#             for item in cart:
-#                 total_price = total_price + item.products.selling_price*item.product_qty
-#             total = {
-#                 'total_price':total_price
-#             }
-#             return JsonResponse(total)
+            total = {
+                'total_price':total_price,
+                'message':message,
+                'coupon_num' :coupon_user.id
+            }
+            return JsonResponse(total)
+        else:
+            cart = cartItems.objects.filter(user = request.user)
+            total_price = 0
+            for item in cart:
+                total_price = total_price + item.products.selling_price*item.product_qty
+            total = {
+                'total_price':total_price
+            }
+            return JsonResponse(total)
 
 
 # products = Products.objects.filter(trending=1, delete_product=False, Category__delete_category=False)[:8]

@@ -298,31 +298,6 @@
 var total_price = 0; 
 var total_wallet_amount = 0
 var coupon_code = 0
-
-
-// $(document).on('submit', '#coupon_form form', function(event) {
-//   event.preventDefault();
-//   var coupon_name = $('#coupon_name_id').val();
-//   var token = $('input[name=csrfmiddlewaretoken]').val();
-//   console.log(coupon_name);
-//   $.ajax({
-//     method: "POST",
-//     url: "",
-//     data: {
-//       'couponValue':coupon_name,
-//       'csrfmiddlewaretoken': token
-//     },
-//     success: function (response) {
-//       total_price = response.total_price
-//       coupon_code = response.coupon_num
-//       console.log(response.message)
-//       $("#cop").text(response.message)
-//       $("#total_am").text(total_price);
-
-//     }
-//   });
-// });
-
 $(document).ready(function () {
   $.ajax({
     method: "GET",
@@ -333,6 +308,31 @@ $(document).ready(function () {
     }
   });
 });
+
+$(document).on('submit', '#coupon_form form', function(event) {
+  event.preventDefault();
+  var coupon_name = $('#coupon_name_id').val();
+  var token = $('input[name=csrfmiddlewaretoken]').val();
+  console.log(coupon_name);
+  $.ajax({
+    method: "POST",
+    url: "{% url 'coupon_discount' %}",
+    data: {
+      'couponValue':coupon_name,
+      'csrfmiddlewaretoken': token
+    },
+    success: function (response) {
+      total_price = response.total_price
+      coupon_code = response.coupon_num
+      console.log(response.message)
+      $("#cop").text(response.message)
+      $("#total_am").text(total_price);
+
+    }
+  });
+});
+
+
 
   var total_wallet_amount = {{ total_wallet_amount }};
   if ( total_wallet_amount == 0.00 ){
