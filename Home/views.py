@@ -300,7 +300,7 @@ def cod_placeorder(request):
             orderproduct.quantity = orderproduct.quantity - item.product_qty
             orderproduct.save()
         cartItems.objects.filter(user=request.user).delete()
-        return JsonResponse({'status':'done'})
+        return redirect('successful')
 
 @login_required(login_url='login')
 def placeorder(request):
