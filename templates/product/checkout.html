@@ -298,6 +298,31 @@
 var total_price = 0; 
 var total_wallet_amount = 0
 var coupon_code = 0
+
+
+// $(document).on('submit', '#coupon_form form', function(event) {
+//   event.preventDefault();
+//   var coupon_name = $('#coupon_name_id').val();
+//   var token = $('input[name=csrfmiddlewaretoken]').val();
+//   console.log(coupon_name);
+//   $.ajax({
+//     method: "POST",
+//     url: "",
+//     data: {
+//       'couponValue':coupon_name,
+//       'csrfmiddlewaretoken': token
+//     },
+//     success: function (response) {
+//       total_price = response.total_price
+//       coupon_code = response.coupon_num
+//       console.log(response.message)
+//       $("#cop").text(response.message)
+//       $("#total_am").text(total_price);
+
+//     }
+//   });
+// });
+
 $(document).ready(function () {
   $.ajax({
     method: "GET",
@@ -308,31 +333,6 @@ $(document).ready(function () {
     }
   });
 });
-
-$(document).on('submit', '#coupon_form form', function(event) {
-  event.preventDefault();
-  var coupon_name = $('#coupon_name_id').val();
-  var token = $('input[name=csrfmiddlewaretoken]').val();
-  console.log(coupon_name);
-  $.ajax({
-    method: "POST",
-    url: "{% url 'coupon_discount' %}",
-    data: {
-      'couponValue':coupon_name,
-      'csrfmiddlewaretoken': token
-    },
-    success: function (response) {
-      total_price = response.total_price
-      coupon_code = response.coupon_num
-      console.log(response.message)
-      $("#cop").text(response.message)
-      $("#total_am").text(total_price);
-
-    }
-  });
-});
-
-
 
   var total_wallet_amount = {{ total_wallet_amount }};
   if ( total_wallet_amount == 0.00 ){
@@ -392,7 +392,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
               var datas = {
                 'payment_mode': 'Razorpay',
                 'payment_id': responsev.razorpay_payment_id,
-                'coupon_name': null,
+                'coupon_name':coupon_code,
                 'csrfmiddlewaretoken': token
               }
               $.ajax({
@@ -440,7 +440,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         url: '{% url "placeorder" %}',
         type: 'POST',
         data: { 'payment_mode': 'Wallet',
-        'coupon_name':null,
+        'coupon_name':coupon_code,
         'csrfmiddlewaretoken': '{{ csrf_token }}' },
         success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
@@ -452,7 +452,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         $.ajax({
         url: '{% url "placeorder" %}',
         type: 'POST',
-        data: { 'payment_mode': 'COD+Wallet','coupon_name':null, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+        data: { 'payment_mode': 'COD+Wallet','coupon_name':coupon_code, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
         success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
@@ -476,7 +476,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
               var datas = {
                 'payment_mode': 'Razorpay+Wallet',
                 'payment_id': responsev.razorpay_payment_id,
-                'coupon_name':null,
+                'coupon_name':coupon_code,
                 'csrfmiddlewaretoken': token
               }
               $.ajax({

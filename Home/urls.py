@@ -46,9 +46,9 @@ urlpatterns = [
     path('listing', views.listing,name="listing" ),
     
 
-    path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
+    # path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
 
-    path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
+    # path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
 
 
 
