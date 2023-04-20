@@ -425,11 +425,11 @@ $(document).on('submit', '#coupon_form form', function(event) {
         url: '/placeorder',
         type: 'POST',
         data: { 'payment_mode': 'COD','coupon_name':coupon_code,'csrfmiddlewaretoken': '{{ csrf_token }}' },
-        success: function (responsofcod) {
+        success: function (responsofcodb) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
           });
-          console.log(responsofcod)
+          console.log(responsofcodb)
         }
       });
     } else if (wallet_p === 'Wallet') {
