@@ -208,12 +208,6 @@ def checkout(request):
     return render(request, 'product/checkout.html', context)
 
 
-def proceed_to_pay(request):
-    total_price =0
-    cartItem = cartItems.objects.filter(user=request.user)
-    for item in cartItem:
-        total_price = total_price + item.products.selling_price*item.product_qty
-    return JsonResponse(total_price,safe=False)
 
 
 @login_required(login_url='login')
