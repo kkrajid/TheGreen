@@ -250,119 +250,109 @@ def checkout_add_address(request):
 @login_required(login_url='login')
 def placeorder(request):
     if request.method == 'POST':
-
-        return JsonResponse({'status':"done"})
-#         user_address = Address.objects.get(user=request.user,defaults=True,delete_address=False)
-#         new_order = Order()
-#         new_order.user = request.user
-#         new_order.address=user_address
-#         new_order.payment_mode = request.POST.get('payment_mode')
-#         new_order.payment_id = request.POST.get('payment_id')
-#         payment_mode = request.POST.get('payment_mode')
-#         cart = cartItems.objects.filter(user= request.user)
-#         cart_total_price = 0
-#         discount = 0
-#         for item in cart:
-#             cart_total_price += item.products.selling_price*item.product_qty
-# #------------------------------------------------------------------------------------------------
-#         coupon_name = request.POST.get('coupon_name')
-#         print('-----------------------------------------------------------')
-#         print(coupon_name)
-#         print('-----------------------------------------------------------')
-#         coup = Coupon.objects.filter(coupon_code=coupon_name).first()
-#         print(coup)
-#         message=0
+        user_address = Address.objects.get(user=request.user,defaults=True,delete_address=False)
+        new_order = Order()
+        new_order.user = request.user
+        new_order.address=user_address
+        new_order.payment_mode = request.POST.get('payment_mode')
+        new_order.payment_id = request.POST.get('payment_id')
+        payment_mode = request.POST.get('payment_mode')
+        cart = cartItems.objects.filter(user= request.user)
+        cart_total_price = 0
+        discount = 0
+        for item in cart:
+            cart_total_price += item.products.selling_price*item.product_qty
+#------------------------------------------------------------------------------------------------
+        coupon_name = request.POST.get('coupon_name')
+        print('-----------------------------------------------------------')
+        print(coupon_name)
+        print('-----------------------------------------------------------')
+        coup = Coupon.objects.filter(coupon_code=coupon_name).first()
+        print(coup)
+        message=0
         
-#         try:
-#             coup = Coupon.objects.filter(coupon_code=coupon_name).first()
+        try:
+            coup = Coupon.objects.filter(coupon_code=coupon_name).first()
 
-#             if coup :
-#                 rd = Order.objects.filter(user=request.user,coupon_id =coup.id)
-#                 if rd:
-#                     message = 'Coupon already taken'
-#                 else:
-#                     if cart_total_price > coup.discount_price:
-#                         discou =cart_total_price- coup.discount_price
-#                         discount = discou
-#                         new_order.coupon_id = int(coup.id)
-#                         message = 'Coupon added'
-#                     else:
-#                         message = 'Buy above '+str(coup.discount_price)
-#             else:
-#                 message = 'invalid coupon'
-#         except:
-#             pass
+            if coup :
+                rd = Order.objects.filter(user=request.user,coupon_id =coup.id)
+                if rd:
+                    message = 'Coupon already taken'
+                else:
+                    if cart_total_price > coup.discount_price:
+                        discou =cart_total_price- coup.discount_price
+                        discount = discou
+                        new_order.coupon_id = int(coup.id)
+                        message = 'Coupon added'
+                    else:
+                        message = 'Buy above '+str(coup.discount_price)
+            else:
+                message = 'invalid coupon'
+        except:
+            pass
 
-#         # if not Coupon.objects.filter(coupon_code=coupon_name).exists():
-#         #     message = 'invalid coupon'
-#         # else:
-#         #     coupon_user = Coupon.objects.get(coupon_code=coupon_name)
-#         #     if(Order.objects.filter(user=request.user,coupon__coupon_code =coupon_name).exists()):
-#         #         message = 'Coupon already taken'
-#         #     else:
-#         #         if cart_total_price > coupon_user.discount_price:
-#         #             cart_total_price -=coupon_user.discount_price
-#         #             discount = cart_total_price
-#         #             new_order.coupon.coupon_code =coupon_name
-#         #             message = 'Coupon added'
-#         #         else:
-#         #             message = 'Buy above '+str(coupon_user.discount_price)
-#         print('-----------------------------------------------------------')
-#         print(message)
-#         print('-----------------------------------------------------------')
-# #------------------------------------------------------------------------------------------------
-#         if payment_mode == 'Wallet':
-#             balance = cart_total_price*-1
-#             time = datetime.now().time()
-#             wallet.objects.create(user = request.user,mode='Money out',amount=balance,created_at=time)
 
-#         if payment_mode == 'Razorpay+Wallet' or payment_mode == 'COD+Wallet':
-#             user_wallet = wallet.objects.filter(user = request.user)
-#             total_wallet_amount = 0
-#             for item in user_wallet:
-#                 total_wallet_amount += item.amount
-#             wallet_remain = total_wallet_amount*-1
-#             balance = wallet_remain
-#             time = datetime.now().time()
-#             wallet.objects.create(user = request.user,mode='Money out',amount=balance,created_at=time)
+        print('-----------------------------------------------------------')
+        print(message)
+        print('-----------------------------------------------------------')
+#------------------------------------------------------------------------------------------------
+        if payment_mode == 'Wallet':
+            balance = cart_total_price*-1
+            time = datetime.now().time()
+            wallet.objects.create(user = request.user,mode='Money out',amount=balance,created_at=time)
 
-#         new_order.total_price = cart_total_price
-#         new_order.discount_price = discount
+        if payment_mode == 'Razorpay+Wallet' or payment_mode == 'COD+Wallet':
+            user_wallet = wallet.objects.filter(user = request.user)
+            total_wallet_amount = 0
+            for item in user_wallet:
+                total_wallet_amount += item.amount
+            wallet_remain = total_wallet_amount*-1
+            balance = wallet_remain
+            time = datetime.now().time()
+            wallet.objects.create(user = request.user,mode='Money out',amount=balance,created_at=time)
 
-#         trackno = 'TGN'+str(random.randint(1111111,9999999))
+        new_order.total_price = cart_total_price
+        new_order.discount_price = discount
 
-#         while Order.objects.filter(tracking_no = trackno) is None:
-#             trackno = 'TGN'+str(random.randint(1111111,9999999))
+        trackno = 'TGN'+str(random.randint(1111111,9999999))
+
+        while Order.objects.filter(tracking_no = trackno) is None:
+            trackno = 'TGN'+str(random.randint(1111111,9999999))
             
-#         new_order.tracking_no = trackno
-#         new_order.created_at=datetime.now().time()
-#         new_order.save()
-#         new_order_items = cartItems.objects.filter(user=request.user)
-#         print(new_order_items)
-#         print(new_order)
-#         for item in new_order_items:
-#             rtotal = item.products.selling_price*item.product_qty
-#             Orderitem.objects.create(order=new_order,product=item.products,price=item.products.selling_price,quantity=item.product_qty,total=rtotal)
-#             orderproduct = Products.objects.filter(id=item.products.id).first()
-#             orderproduct.quantity = orderproduct.quantity - item.product_qty
-#             orderproduct.save()
+        new_order.tracking_no = trackno
+        new_order.created_at=datetime.now().time()
+        new_order.save()
+        new_order_items = cartItems.objects.filter(user=request.user)
+        print(new_order_items)
+        print(new_order)
+        for item in new_order_items:
+            rtotal = item.products.selling_price*item.product_qty
+            Orderitem.objects.create(order=new_order,product=item.products,price=item.products.selling_price,quantity=item.product_qty,total=rtotal)
+            orderproduct = Products.objects.filter(id=item.products.id).first()
+            orderproduct.quantity = orderproduct.quantity - item.product_qty
+            orderproduct.save()
 
-#         cartItems.objects.filter(user=request.user).delete()
+        cartItems.objects.filter(user=request.user).delete()
 
-#         payMode = request.POST.get('payment_mode')
-#         pr_id = request.POST.get('payment_id')
-#         name =  user_address.first_name + ' '+  user_address.last_name
-#         if payMode == 'Razorpay' or payMode == 'Razorpay+Wallet' :
-#             responsess = {
-#                 'product_id':pr_id,
-#                 'name':name
-#             }
-#             print("payment done")
-#             return JsonResponse(responsess)
-#         return redirect('successful')
+        payMode = request.POST.get('payment_mode')
 
-#     else:
-#         return redirect('Home')
+
+        pr_id = request.POST.get('payment_id')
+
+        if payMode == "COD":
+            return JsonResponse({'statusofcod' :"done"})
+        name =  user_address.first_name + ' '+  user_address.last_name
+        if payMode == 'Razorpay' or payMode == 'Razorpay+Wallet' :
+            responsess = {
+                'product_id':pr_id,
+                'name':name
+            }
+            print("payment done")
+            return JsonResponse(responsess)
+        
+
+    else:
+        return redirect('Home')
 
 @login_required(login_url='login')  
 def razorpay(request):

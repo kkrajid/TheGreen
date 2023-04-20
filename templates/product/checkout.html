@@ -426,7 +426,10 @@ $(document).on('submit', '#coupon_form form', function(event) {
         type: 'POST',
         data: { 'payment_mode': 'COD','coupon_name':coupon_code,'csrfmiddlewaretoken': '{{ csrf_token }}' },
         success: function (responsofcod) {
-         console.log(responsofcod)
+          swal('Congratulations!').then((value) => {
+            window.location.href = '{% url "my_orders" %}'
+          });
+          console.log(responsofcod)
         }
       });
     } else if (wallet_p === 'Wallet') {
