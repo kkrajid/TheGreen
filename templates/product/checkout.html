@@ -420,9 +420,9 @@ $(document).on('submit', '#coupon_form form', function(event) {
         }
       });
     } else if (paymentMethod === 'cod' && checkbox_status === 'unchecked' ) {
-      console.log("codddddddddddddddd")
+      console.log("coddddddddddddddd")
       $.ajax({
-        url: '{% url "placeorder" %}',
+        url: '/placeorder',
         type: 'POST',
         data: { 'payment_mode': 'COD','coupon_name':coupon_code,'csrfmiddlewaretoken': '{{ csrf_token }}' },
         success: function (responsofcod) {
