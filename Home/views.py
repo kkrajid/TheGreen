@@ -267,22 +267,22 @@ def placeorder(request):
         print('-----------------------------------------------------------')
         print(coupon_name)
         print('-----------------------------------------------------------')
-        coup = Coupon.objects.filter(id=coupon_name).first()
+        coup = Coupon.objects.filter(coupon_code=coupon_name).first()
         print(coup)
         message=0
         
         try:
-            coup = Coupon.objects.filter(id=coupon_name).first()
+            coup = Coupon.objects.filter(coupon_code=coupon_name).first()
 
             if coup :
-                rd = Order.objects.filter(user=request.user,coupon_id =coupon_name)
+                rd = Order.objects.filter(user=request.user,coupon_id =coup.id)
                 if rd:
                     message = 'Coupon already taken'
                 else:
                     if cart_total_price > coup.discount_price:
                         discou =cart_total_price- coup.discount_price
                         discount = discou
-                        new_order.coupon_id = int(coupon_name)
+                        new_order.coupon_id = int(coup.id)
                         message = 'Coupon added'
                     else:
                         message = 'Buy above '+str(coup.discount_price)
