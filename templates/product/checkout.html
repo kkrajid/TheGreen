@@ -392,7 +392,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
               var datas = {
                 'payment_mode': 'Razorpay',
                 'payment_id': responsev.razorpay_payment_id,
-                'coupon_name':coupon_code,
+                'coupon_name': null,
                 'csrfmiddlewaretoken': token
               }
               $.ajax({
@@ -440,7 +440,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         url: '{% url "placeorder" %}',
         type: 'POST',
         data: { 'payment_mode': 'Wallet',
-        'coupon_name':coupon_code,
+        'coupon_name':null,
         'csrfmiddlewaretoken': '{{ csrf_token }}' },
         success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
@@ -452,7 +452,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         $.ajax({
         url: '{% url "placeorder" %}',
         type: 'POST',
-        data: { 'payment_mode': 'COD+Wallet','coupon_name':coupon_code, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+        data: { 'payment_mode': 'COD+Wallet','coupon_name':null, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
         success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
@@ -476,7 +476,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
               var datas = {
                 'payment_mode': 'Razorpay+Wallet',
                 'payment_id': responsev.razorpay_payment_id,
-                'coupon_name':coupon_code,
+                'coupon_name':null,
                 'csrfmiddlewaretoken': token
               }
               $.ajax({
