@@ -267,16 +267,15 @@ def placeorder(request):
         print('-----------------------------------------------------------')
         print(coupon_name)
         print('-----------------------------------------------------------')
-
+        coup = Coupon.objects.filter(id=coupon_name).first()
+        print(coup)
+        message=0
         
         try:
             coup = Coupon.objects.filter(id=coupon_name).first()
-            print(coup)
-            message=0
-            coup = Coupon.objects.filter(id=coupon_name).first()
 
             if coup :
-                rd = Order.objects.filter(user=request.user,coupon =coupon_name)
+                rd = Order.objects.filter(user=request.user,coupon_id =coupon_name)
                 if rd:
                     message = 'Coupon already taken'
                 else:
@@ -306,7 +305,9 @@ def placeorder(request):
         #             message = 'Coupon added'
         #         else:
         #             message = 'Buy above '+str(coupon_user.discount_price)
-
+        print('-----------------------------------------------------------')
+        print(message)
+        print('-----------------------------------------------------------')
 #------------------------------------------------------------------------------------------------
         if payment_mode == 'Wallet':
             balance = cart_total_price*-1
