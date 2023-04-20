@@ -136,7 +136,7 @@ class Coupon(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     address = models.ForeignKey(Address,on_delete=models.CASCADE)
-    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
+    coupon = models.ForeignKey(on_delete=models.CASCADE,to='Accounts.coupon')
     total_price = models.FloatField(null=False)
     payment_mode = models.CharField(max_length=150,null=False)
     discount_price = models.DecimalField(decimal_places=2, default=0, max_digits=10)
