@@ -246,6 +246,61 @@ def checkout_add_address(request):
 
 
 
+def cod_placeorder(request):
+    if request.method == 'POST':
+        user_address = Address.objects.get(user=request.user,defaults=True,delete_address=False)
+        new_order = Order()
+        new_order.user = request.user
+        new_order.address=user_address
+        new_order.payment_mode = request.POST.get('payment_mode')
+        new_order.payment_id = 0
+        cart = cartItems.objects.filter(user= request.user)
+        cart_total_price = 0
+        discount = 0
+        for item in cart:
+            cart_total_price += item.products.selling_price*item.product_qty
+
+        message=0
+        try:
+            coupon_name = request.POST.get('coupon_name')
+            coup = Coupon.objects.filter(coupon_code=coupon_name).first()
+
+            if coup :
+                rd = Order.objects.filter(user=request.user,coupon_id =coup.id)
+                if rd:
+                    message = 'Coupon already taken'
+                else:
+                    if cart_total_price > coup.discount_price:
+                        discou =cart_total_price- coup.discount_price
+                        discount = discou
+                        new_order.coupon_id = int(coup.id)
+                        message = 'Coupon added'
+                    else:
+                        message = 'Buy above '+str(coup.discount_price)
+            else:
+                message = 'invalid coupon'
+        except:
+            pass
+        new_order.total_price = cart_total_price
+        new_order.discount_price = discount
+
+        trackno = 'TGN'+str(random.randint(1111111,9999999))
+
+        while Order.objects.filter(tracking_no = trackno) is None:
+            trackno = 'TGN'+str(random.randint(1111111,9999999))
+            
+        new_order.tracking_no = trackno
+        new_order.created_at=datetime.now().time()
+        new_order.save()
+        new_order_items = cartItems.objects.filter(user=request.user)
+        for item in new_order_items:
+            rtotal = item.products.selling_price*item.product_qty
+            Orderitem.objects.create(order=new_order,product=item.products,price=item.products.selling_price,quantity=item.product_qty,total=rtotal)
+            orderproduct = Products.objects.filter(id=item.products.id).first()
+            orderproduct.quantity = orderproduct.quantity - item.product_qty
+            orderproduct.save()
+        cartItems.objects.filter(user=request.user).delete()
+        return JsonResponse({'status':'done'})
 
 @login_required(login_url='login')
 def placeorder(request):

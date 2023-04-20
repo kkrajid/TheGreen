@@ -420,16 +420,16 @@ $(document).on('submit', '#coupon_form form', function(event) {
         }
       });
     } else if (paymentMethod === 'cod' && checkbox_status === 'unchecked' ) {
-      console.log("coddddddddddddddd")
+      console.log("coddddd")
       $.ajax({
-        url: '/placeorder',
+        url: '{% url "cod_placeorder" %}',
         type: 'POST',
         data: { 'payment_mode': 'COD','coupon_name':coupon_code,'csrfmiddlewaretoken': '{{ csrf_token }}' },
-        success: function (responsofcodb) {
+        success: function (respon) {
+          console.log(respon)
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
           });
-          console.log(responsofcodb)
         }
       });
     } else if (wallet_p === 'Wallet') {
@@ -443,7 +443,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         data: { 'payment_mode': 'Wallet',
         'coupon_name':coupon_code,
         'csrfmiddlewaretoken': '{{ csrf_token }}' },
-        success: function (responsofwall) {
+        success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
           });
@@ -454,7 +454,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         url: '{% url "placeorder" %}',
         type: 'POST',
         data: { 'payment_mode': 'COD+Wallet','coupon_name':coupon_code, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
-        success: function (responsofcodw) {
+        success: function (responsofcod) {
           swal('Congratulations!').then((value) => {
             window.location.href = '{% url "my_orders" %}'
           });

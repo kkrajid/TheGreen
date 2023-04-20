@@ -48,6 +48,9 @@ urlpatterns = [
 
     path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
 
+    path('cod_placeorder',views.cod_placeorder,name="cod_placeorder" ),
+    
+
 
 
 
