@@ -420,7 +420,7 @@ $(document).on('submit', '#coupon_form form', function(event) {
         }
       });
     } else if (paymentMethod === 'cod' && checkbox_status === 'unchecked' ) {
-
+      console.log("codddddddddddddddd")
       $.ajax({
         url: '{% url "placeorder" %}',
         type: 'POST',
