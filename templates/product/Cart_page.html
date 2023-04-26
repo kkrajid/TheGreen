@@ -190,7 +190,7 @@
                       <div class="aside"><img src="{{item.products.product_image.url}}" class="img-sm"></div>
                       <figcaption class="info"> <a href="#" class="title text-dark"
                           data-abc="true">{{item.products.name}}</a>
-                        <p class="text-muted small"> <br> Brand: </p>
+                        <p class="text-muted small"> <br> QTY:<span type="text" class="prdq" >{{item.products.quantity}}</span> </p>
                       </figcaption>
                     </figure>
                   </td>
@@ -199,7 +199,7 @@
                       <input type="hidden" class="prod_id" value="{{item.products_id}}">
                       {% csrf_token %}
                       {% if item.products.quantity >= item.product_qty %}
-                     
+                      <input type="hidden" value="false" id="outofstock">
                       <div class="input-group-text mb-3 " style="width: 130px;">
                         <button class=" input-group-text changequantity decrement-btn">-</button>
                         <input type="text" name="quantity" class="form-control qty-input text-center"
@@ -208,7 +208,8 @@
                       </div>
                       {% else %}
                       <h6>Out of Stock</h6>
-                      {% endif %}
+                      <input type="hidden" value="true" id="outofstock">
+                    {% endif %}
                     </div>
                   </td>
                   <td>
@@ -232,7 +233,7 @@
                 <dt>Total:</dt>
                 <dd class="text-right text-dark b ml-3"><strong class="ored">{{total_price}}</strong></dd>
               </dl>
-              <hr> <a href="{% url 'checkout' %}" class="btn btn-out btn-primary btn-square btn-main" data-abc="true">
+              <hr> <a href="{% url 'checkout' %}" class="btn btn-out btn-primary btn-square btn-main " id="myDiv1" data-abc= "true">
                 Checkout </a>
               <a href="{% url 'Home' %}" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Continue
                 Shopping</a>
@@ -251,18 +252,21 @@
   <script>
 
     $(document).ready(function () {
-
-
+      checkstock();
 
       $('.increment-btn').click(function (e) {
         e.preventDefault();
         var dec_value = $(this).closest('.product_data').find('.qty-input').val();
         var sellprice = $(this).closest('.product_data').find('.selling').text();
+        var prdqty1 = $(this).closest('.product_data').find('.prdq').text();
+        var qtyofp = parseInt(prdqty1, 10);
+        console.log(qtyofp)
         var value = parseInt(dec_value, 10);
         var sellpriceOfpro = parseInt(sellprice, 10);
+  
 
         value = isNaN(value) ? 0 : value;
-        if (value < 10) {
+        if (value < qtyofp) {
           value++;
           $(this).closest('.product_data').find('.qty-input').val(value);
 
@@ -279,6 +283,7 @@
         var sellprice = $(this).closest('.product_data').find('.selling').text();
         var value = parseInt(dec_value, 10);
         var sellpriceOfpro = parseInt(sellprice, 10);
+        
 
         value = isNaN(value) ? 0 : value;
         if (value > 1) {
@@ -359,6 +364,21 @@
     myLink.addEventListener('click', function (e) {
       e.preventDefault();
     });
+
+    function checkstock(){
+      let stock = document.getElementById('outofstock').value
+      let btn = document.getElementById('myDiv1')
+      console.log(stock);
+      console.log(btn);
+      if (stock == true){
+        btn.href = "javascript:void(0)";
+        btn.addEventListener('click',function(event){
+          swal("Remove out of stock items first");
+        })
+
+      }
+
+    }
   </script>
 
   {% endblock content %}

@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 import vonage
 from django.db.models import Count
+
 # Create your views here.
 
 
@@ -70,6 +71,24 @@ def registration(request):
             return redirect("otp")
     return render(request, 'userAccount/registration.html')
 
+
+
+# @never_cache
+# def registration(request):
+#     if request.user.is_authenticated:
+#         return redirect('Home')
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         mobile = request.POST.get('mobile')
+#         name = request.POST.get('first_name')
+#         password1 = request.POST.get('password1')
+#         password2 = request.POST.get('password2')
+
+#         check_user = User.objects.filter(email=email).first()
+#         if check_user:
+#             context = {'message' : "Email already take",'class' : 'danger'}
+#             return render(request, 'userAccount/registration.html',context)
+#     return render(request, 'userAccount/registration.html')
 
 
 @never_cache

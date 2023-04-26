@@ -189,10 +189,7 @@ def checkout(request):
         # Handle the case where there's no default address for the user
         user_address = None
     unique_addresses = Address.objects.filter(user=request.user,delete_address=False).order_by("-defaults")
-    for item in cartItem:
-        if item.product_qty > item.products.quantity:
-            cart = cartItems.objects.filter(id=item.id)
-            cart.delete()
+
 
     cartItem = cartItems.objects.filter(user=request.user)
     for item in cartItem:
@@ -695,6 +692,13 @@ def coupon_discount(request):
                 total_price = total_price + item.products.selling_price*item.product_qty
             if not  Coupon.objects.filter(coupon_code=val).exists():
                 message = 'invalid coupon'
+                total = {
+                    'valid':'true',
+                    'total_price':total_price,
+                    'message':message,
+                }
+                return JsonResponse(total)
+
             else:
                 coupon_user = Coupon.objects.get(coupon_code=val)
                 if(Order.objects.filter(coupon__coupon_code =coupon_user.coupon_code).exists()):
@@ -708,6 +712,8 @@ def coupon_discount(request):
                         message = 'Buy above '+str(coupon_user.discount_price)
 
             total = {
+                'valid':'false',
+                'coupon_discount':coupon_user.discount_price,
                 'total_price':total_price,
                 'message':message,
                 'coupon_num' :coupon_user.id
@@ -719,6 +725,7 @@ def coupon_discount(request):
             for item in cart:
                 total_price = total_price + item.products.selling_price*item.product_qty
             total = {
+                'valid':'false',
                 'total_price':total_price
             }
             return JsonResponse(total)
