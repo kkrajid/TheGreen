@@ -14,7 +14,7 @@ from django.db.models import Count
 
 
 def send_otp(mobile,otp):
-    client = vonage.Client(key="8b79c8c7", secret="plm3fd2e2TRhV8ug")
+    client = vonage.Client(key="f646a647", secret="gfytSLdGH2hs98hQ")
     sms = vonage.Sms(client)
     Mobile_No = str(91)+mobile
     print(mobile)
