@@ -10,26 +10,34 @@ from django.http import HttpResponse, JsonResponse
 import vonage
 from django.db.models import Count
 
-# Create your views here.
 
+from django.conf import settings
+from django.core.mail import send_mail
 
-def send_otp(mobile,otp):
-    client = vonage.Client(key="f646a647", secret="gfytSLdGH2hs98hQ")
-    sms = vonage.Sms(client)
-    Mobile_No = str(91)+mobile
-    print(mobile)
-    responseData = sms.send_message(
-        {
-            "from": "Vonage APIs",
-            "to": Mobile_No,
-            "text": f"Enter this OTP {otp}",
-        }
-    )
-    if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
-    else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-    return None
+def send_otp(email,otp):
+    subject = 'Your OTP for verification'
+    message = f'Hi there! Your One-Time Password (OTP) for verification is: {otp}. Please enter this code in the appropriate field to complete the verification process. Thank you for choosing our service!'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email, ]
+    send_mail( subject, message, email_from, recipient_list )
+
+# def send_otp(mobile,otp):
+#     client = vonage.Client(key="f646a647", secret="gfytSLdGH2hs98hQ")
+#     sms = vonage.Sms(client)
+#     Mobile_No = str(91)+mobile
+#     print(mobile)
+#     responseData = sms.send_message(
+#         {
+#             "from": "Vonage APIs",
+#             "to": Mobile_No,
+#             "text": f"Enter this OTP {otp}",
+#         }
+#     )
+#     if responseData["messages"][0]["status"] == "0":
+#         print("Message sent successfully.")
+#     else:
+#         print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+#     return None
 
 
 
@@ -66,7 +74,7 @@ def registration(request):
             otp = str(random.randint(1000, 9999))
             request.session['otp'] = otp
             request.session['email'] = email
-            send_otp(mobile,otp)
+            send_otp(email,otp)
             print(otp)
             return redirect("otp")
     return render(request, 'userAccount/registration.html')
