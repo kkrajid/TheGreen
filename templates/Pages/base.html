@@ -103,7 +103,7 @@
                     <button class="border-0 btn btn-outline-secondary text-success bg-white"><i
                             class="icofont-search"></i></button>
                 </div>
-                <input type="text" class="shadow-none border-0 form-control pl-0" id="search-input" placeholder="Search for Products.."
+                <input type="text" class="shadow-none border-0 form-control pl-0" placeholder="Search for Products.."
                     aria-label="" aria-describedby="basic-addon1">
             </div>
         </a>
@@ -284,51 +284,14 @@
         </div>
     </div>
     <!-- ------------------------------------Website header end--------------------------------------------------------------------------- -->
-    <nav id="main-nav">
-        <ul class="second-nav">
-          <li><a href="{% url 'Home' %}"><i class="icofont-smart-phone mr-2"></i> Home</a></li>
-          <li><a class="dropdown-item" href="{% url 'listing' %}">Listing</a></li>
-          <li><a class="dropdown-item" href="{% url 'allproducts' %}">Trending</a></li>
-          <li><a class="dropdown-item" href="recommend.html">Recommended</a></li>
-          <li><a class="dropdown-item" href="fresh_vegan.html">Most Popular</a></li>
-          <li><a class="dropdown-item" href="{% url 'Cart_page' %}">Cart</a></li>
-          <li>
-            <a href="#"><i class="icofont-sub-listing mr-2"></i> My Order</a>
-            <ul>
-              <li><a class="dropdown-item" href="{% url 'my_orders' %}">My order</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href="#"><i class="icofont-ui-user mr-2"></i> My Account</a>
-            <ul>
-              <li><a class="dropdown-item" href="{% url 'Myaccounts' %}">My account</a></li>
-              <li><a class="dropdown-item" href="promos.html">Promos</a></li>
-              <li><a class="dropdown-item" href="{% url 'Myaddress' %}">My address</a></li>
-              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
-        <ul class="bottom-nav">
-          <li class="email">
-            <a class="text-success" href="{% url 'Home' %}">
-              <p class="h5 m-0"><i class="icofont-home text-success"></i></p>
-              Home
-            </a>
-          </li>
-          <li class="github">
-            <a href="{% url 'Cart_page' %}">
-              <p class="h5 m-0"><i class="icofont-cart"></i></p>
-              CART
-            </a>
-          </li>
-          <li class="ko-fi">
-            <a href="#">
-              <p class="h5 m-0"><i class="icofont-headphone"></i></p>
-              Help
-            </a>
-          </li>
-        </ul>
-      </nav>
+    <nav aria-label="breadcrumb" class="breadcrumb mb-0 d-none">
+        <div class="container">
+            <ol class="d-flex align-items-center mb-0 p-0">
+                <li class="breadcrumb-item"><a href="#" class="text-success">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"></li>
+            </ol>
+        </div>
+    </nav>
 
 
     {% block content %}{% endblock content %}
