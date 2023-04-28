@@ -103,7 +103,7 @@
                     <button class="border-0 btn btn-outline-secondary text-success bg-white"><i
                             class="icofont-search"></i></button>
                 </div>
-                <input type="text" class="shadow-none border-0 form-control pl-0 search-input" placeholder="Search for Products.."
+                <input type="text" class="shadow-none border-0 form-control pl-0 " placeholder="Search for Products.."
                     aria-label="" aria-describedby="basic-addon1">
             </div>
         </a>
@@ -166,7 +166,7 @@
                 <!-------------------------------------------search start------------------------------------------------------ -->
                 <form class="input-group mr-sm-2 col-lg-12" id="search-form">
                     {% csrf_token %}
-                    <input type="text" class="form-control search-input" id="search-input" placeholder="Search for Products..">
+                    <input type="text" class="form-control" id="search-input" placeholder="Search for Products..">
                     <div class="input-group-prepend">
                         <div class="btn btn-success rounded-right"><i class="icofont-search"></i></div>
                     </div>
@@ -468,7 +468,7 @@
 
         const url = window.location.href;
         const searchForm = document.getElementById('search-form');
-        const searchInput = document.getElementsByClassName('search-input');
+        const searchInput = document.getElementById('search-input');
         const searchlist = document.getElementById('searchlist');
         const resultOFsearch = document.getElementById('resultOFsearch');
 
