@@ -542,7 +542,7 @@
                     class="icofont-plus m-0 mr-2"></i> ADD TO CART</button>
           {% endif %}
             <a href="#"
-                class="btn btn-success p-3 rounded btn-block d-flex align-items-center justify-content-center btn-lg m-0"><i
+                class="btn btn-success p-3 rounded btn-block d-flex align-items-center justify-content-center btn-lg m-0 buybtn"><i
                     class="icofont-cart m-0 mr-2"></i> BUY NOW</a>
         </div>
     </div>
@@ -723,6 +723,37 @@
           // Handle error response from server
         }
       });
+    });
+
+    $('.buybtn').click(function(e) {
+      e.preventDefault();
+      var product_id = $(this).closest('._p-price-box').find('.prod_id').val();
+      var product_qty = $(this).closest('._p-price-box').find('.qty-input').val();
+      var token = $('input[name=csrfmiddlewaretoken]').val();
+      let popup = document.createElement('div');
+      popup.id = "popup";
+      $.ajax({
+        url: "/add_to_cart",
+        method: "POST",
+        data: {
+          'product_id': product_id,
+          'product_qty': product_qty,
+          'csrfmiddlewaretoken': token
+        },
+        success: function(response) {
+          // Handle successful response from server
+          if (response.state) {
+            window.location.href = "{% url 'Cart_page'  %}"
+          }
+          $('.cart-count').text(response.count)
+              
+        },
+        error: function(xhr, status, error) {
+          // Handle error response from server
+        }
+      });
+
+
     });
   });
 
