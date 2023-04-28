@@ -490,19 +490,15 @@
                      <ul class="spe_ul"></ul>
                      <div class="_p-qty-and-cart">
                         <div class="_p-add-cart">
-                          {% if products.quantity > 0 %}
-                            {% if products.id in cart %}
-                              <a class="btn-theme btn btn-success " href="{% url 'Cart_page' %}" tabindex="0">
-                                <i class="fa fa-shopping-cart"></i> Go to Cart
-                              </a>
-                            {% else %}
-                              <button class="btn-theme btn btn-success " tabindex="0">
-                                <i class="fa fa-shopping-cart"></i> Add to Cart
-                              </button>
-                            {% endif %}
+                          {% if products.id in cart %}
+                            <a class="btn-theme btn btn-success " href="{% url 'Cart_page' %}" tabindex="0">
+                              <i class="fa fa-shopping-cart"></i> Go to Cart
+                            </a>
                           {% else %}
-                          <h1>Out of stock</h1>
-                          {% endif%}
+                            <button class="btn-theme btn btn-success " tabindex="0">
+                              <i class="fa fa-shopping-cart"></i> Add to Cart
+                            </button>
+                          {% endif %}
                            <input type="hidden" name="pid" value="18" />
                            <input type="hidden" name="price" value="850" />
                            <input type="hidden" name="url" value="" />    
@@ -535,6 +531,7 @@
                     alt="Responsive image">
             </div>
         </div>
+        {% if products.quantity > 0 %}
         <div class="pd-f d-flex align-items-center mb-3">
           {% if products.id in cart %}
           <a href="{% url 'Cart_page' %}"
@@ -549,6 +546,10 @@
                 class="btn btn-success p-3 rounded btn-block d-flex align-items-center justify-content-center btn-lg m-0 buybtn"><i
                     class="icofont-cart m-0 mr-2"></i> BUY NOW</a>
         </div>
+        {% else %}
+        <a 
+        class="btn btn-white p-3 rounded btn-block d-flex align-items-center justify-content-center mr-3 btn-sm text-danger" style="font-size: 24px;"> <b> Out of Stock</b></a>
+        {% endif %}
     </div>
     <div class="col-lg-6">
         <div class="p-4 bg-white rounded shadow-sm">
