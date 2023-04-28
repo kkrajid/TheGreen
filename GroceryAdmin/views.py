@@ -393,7 +393,7 @@ def categorycreate(request):
 @login_required(login_url='GroceryAdmin')
 def product(request):
     if request.user.is_superuser:
-        product= Products.objects.filter(delete_product=False,Category__delete_category=False)
+        product= Products.objects.filter(delete_product=False,Category__delete_category=False).order_by('-id')
         category=Category.objects.filter(delete_category = False)
         # paginator = Paginator(product, 5) # paginate products into 10 products per page
         # page = request.GET.get('page')
