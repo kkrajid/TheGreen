@@ -138,6 +138,7 @@ def login(request):
         
         else:
             messages.info(request,'Mobile Not verified')
+            
             return render(request,'userAccount/login.html')
     
     else:
