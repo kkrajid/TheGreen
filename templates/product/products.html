@@ -52,22 +52,6 @@
   <div class="container my-3" id="langingpage">
 
     <div id="product-list" class="row ">
-      {% comment %} {% for item in products %}
-      <div class="col-md-4 col-lg-3 product">
-        <div class="card my-3">
-          <img src="{{item.product_image.url}}" class="card-image-top" alt="product image">
-          <a href="{% url 'ProductDetails' category item.name %}">
-            <div class="card-body">
-              <h5 class="card-title text-primary text-dark">{{item.name}}</h5>
-              <p class="card-text">
-                <span class="float-start old_price"><s>Rs.{{item.original_price}}</s></span>
-                <span class="float-end new_price">Rs.{{item.selling_price}}</span>
-              </p>
-            </div>
-          </a>
-        </div>
-      </div>
-      {% endfor %} {% endcomment %}
       {% for item in products %}
       <div class="col-6 col-md-3 mb-3">
         <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
