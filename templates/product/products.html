@@ -52,7 +52,7 @@
   <div class="container my-3" id="langingpage">
 
     <div id="product-list" class="row ">
-      {% for item in products %}
+      {% comment %} {% for item in products %}
       <div class="col-md-4 col-lg-3 product">
         <div class="card my-3">
           <img src="{{item.product_image.url}}" class="card-image-top" alt="product image">
@@ -65,6 +65,40 @@
               </p>
             </div>
           </a>
+        </div>
+      </div>
+      {% endfor %} {% endcomment %}
+      {% for item in products %}
+      <div class="col-6 col-md-3 mb-3">
+        <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+          <div class="list-card-image">
+            <a href="{% url 'ProductDetails' item.Category.name item.name %}" class="text-dark">
+              <div class="member-plan position-absolute"><span class="badge m-3 badge-danger">10%</span>
+              </div>
+              <div class="p-3">
+                <img src="{{item.product_image.url}}" class="img-fluid item-img w-100 mb-3">
+                <h6>{{item.name}}</h6>
+                <div class="d-flex align-items-center">
+                  <h6 class="price m-0 text-success">₹ {{item.selling_price}}/kg</h6>
+                  <a data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false"
+                    aria-controls="collapseExample1" class="btn btn-success btn-sm ml-auto">+</a>
+                  <div class="collapse qty_show" id="collapseExample1">
+                    <div>
+                      <span class="ml-auto" href="#">
+                        <form id='myform' class="cart-items-number d-flex" method='POST' action='#'>
+                          <input type='button' value='-' class='qtyminus btn btn-success btn-sm'
+                            field='quantity' />
+                          <input type='text' name='quantity' value='1' class='qty form-control' />
+                          <input type='button' value='+' class='qtyplus btn btn-success btn-sm'
+                            field='quantity' />
+                        </form>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
       {% endfor %}
