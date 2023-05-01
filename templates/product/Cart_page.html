@@ -271,6 +271,9 @@
           $(this).closest('.product_data').find('.qty-input').val(value);
 
         }
+        else{
+          swal("Reached maximum allowed limit");
+        }
         let sellingP = value * sellpriceOfpro;
         $(this).closest('.product_data').find('.price').text(sellingP);
 

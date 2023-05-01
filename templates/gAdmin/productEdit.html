@@ -1,304 +1,368 @@
 
+
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+
+<!-- Mirrored from www.bootstrapdash.com/demo/vanta/template/demo/Emerald/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 02 Apr 2023 17:11:23 GMT -->
+
 <head>
-  <title>Ecommerce Admin Dashboard</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <style >
-    * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Grocery Admin</title>
+  <!-- base:css -->
+  <link rel="stylesheet" href="{% static 'admin/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'admin/style.css' %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="../../images/favicon.png" />
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f0f0f0;
-}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-header {
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-}
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 20px;
-}
-
-.sidebar {
-  background-color: #fff;
-  width: 300px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-  padding: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar ul li a {
-  display: block;
-  color: #444;
-  text-decoration: none;
-  font-size: 16px;
-  padding: 10px 20px;
-  border-left: 3px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.sidebar ul li a.active,
-.sidebar ul li a:hover {
-  background-color: #f0f0f0;
-  border-left-color: #2980b9;
-  color: #2980b9;
-}
-
-.content {
-  flex: 1;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-  margin-left: 20px;
-}
-
-.content h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.content p {
-  font-size: 16px;
-  line-height: 1.5;
-  color: #666;
-}
-table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  <style>
+    .dataTables_filter input[type="search"] {
+      background-color: white;
     }
 
-    th, td {
-      text-align: center;
-      padding: 15px;
-      font-size: 16px;
-      color: #fff;
-      border: none;
+    .date-input {
+      width: 45%;
+
     }
 
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
+    .dataTables_filter {
+      display: none;
     }
 
-    th {
-      background-color: #2196F3;
+    button.dt-button,
+    div.dt-button,
+    a.dt-button,
+    input.dt-button {
+      color: white;
+      background: #ff8000;
     }
 
-    td.actions {
-      display: flex;
-      justify-content: center;
+    input[type=text] {
+      width: 40%;
+      padding: 6px 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
     }
 
-    .edit, .delete {
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      margin-right: 10px;
+    #upload::-webkit-file-upload-button {
+      color: rgb(255, 0, 0);
+      padding: 2%;
+      border-radius: 5%;
     }
 
-    .edit {
-      background-color: #4CAF50;
-      border: 2px solid #4CAF50;
+    #message {
+      width: 40%;
     }
 
-    .edit:hover {
-      background-color: #fff;
-      color: #4CAF50;
+    input.invalid {
+      border: 2px solid red;
     }
-
-    .delete {
-      background-color: #f44336;
-      border: 2px solid #f44336;
-    }
-
-    .delete:hover {
-      background-color: #fff;
-      color: #f44336;
-    }
-    form {
-  background-color: #f7f7f7;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="file"] {
-  display: block;
-  margin-bottom: 10px;
-}
-
-input[type="text"] {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-input[type="email"] {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  input[type="number"] {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-input[type="submit"] {
-  background-color: #333;
-  color: #f34f;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-table th,
-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-  color: black;
-}
-
-table th {
-  background-color: #eee;
-}
-
-.edit-button,
-.delete-button,
-.add-button {
-  background-color: #333;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  margin-right: 5px;
-  padding: 10px;
-}
-
-.edit-button:hover,
-.delete-button:hover,
-.add-button:hover {
-  background-color: #fff;
-  color: #333;
-  border: 1px solid #333;
-}
-
-.edit-button {
-  background-color: #4CAF50;
-}
-
-.delete-button {
-  background-color: #f44336;
-}
-
-.add-button {
-  background-color: #2196F3;
-  margin-top: 20px;
-  float: right;
-  clear: both;
-}
-
   </style>
 </head>
+
 <body>
- <header style="display: flex; align-items: center; justify-content: space-between; background-color: #fff; padding: 2px; box-shadow: 0px 2px 5px rgba(0,0,0,0.2); padding-left:2px">
-  <h1>&nbsp&nbsp The Green</h1>
-  <form action="search" method="get" style="display: flex; align-items: center;">
-    <input type="text" name="search" placeholder="Search..." style="margin-right: 10px; margin-top:8px">
-    <button class="edit-button " type="submit">Search</button>
-  </form>
-</header>
-  <div class="container">
-    <nav class="sidebar">
-      <ul>
-        <li><a href="{% url 'dashboard'  %}" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
-        <li><a href="{% url 'category'  %}"><i class="fas fa-boxes"></i>Category</a></li>
-        <li><a href="{% url 'product'  %}"><i class="fas fa-cubes"></i>Products</a></li>
-        <li><a href="{% url 'customer'  %}"><i class="fas fa-users"></i>Customers</a></li>
-        <li><a href="{% url 'add_banner'  %}"><i class="fas fa-bullhorn"></i>Banner</a></li>
-        <li><a href="{% url 'logout_view'  %}"><i class="fas fa-headset"></i>Logout</a></li>
-      </ul>
+  <div class="container-scroller">
+    <!-- partial:partials/_sidebar.html -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-content-wrapper sidebar-offcanvas">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="menu-title"></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class=" nav-link" href="{% url 'dashboard'  %}">
+              <i class="fas fa-home menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'category'  %}">
+              <i class="fas fa-folder menu-icon"></i>
+              <span class="menu-title">Category</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'product'  %}">
+              <i class="fas fa-box menu-icon"></i>
+
+              <span class="menu-title">Products</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'customer'  %}">
+              <i class="fas fa-users menu-icon"></i>
+              <span class="menu-title">Customers</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_banner'  %}">
+              <i class="fas fa-flag menu-icon"></i>
+              <span class="menu-title">Banner</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'order_view'  %}">
+              <i class="fas fa-truck menu-icon"></i>
+              <span class="menu-title">Orders</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'coupon_managment'  %}">
+              <i class="fas fa-tag menu-icon"></i>
+              <span class="menu-title">Coupon</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout_view'  %}">
+              <i class="fas fa-sign-out-alt menu-icon"></i>
+              <span class="menu-title">Logout</span>
+            </a>
+          </li>
     </nav>
-    <main class="content">
-      <section>
-            <h2>Edit Product</h2>
-            <div class="container">
-   <form method="post" actions="productUpdate" enctype="multipart/form-data">
-    {% csrf_token %}
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_settings-panel.html -->
+      <!-- partial -->
 
+      <!-- partial -->
+      <div class="main-panel mt-5 ">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <div class="table-responsive dashboard-table-info "
+                    style="align-content: center; justify-content: center; text-align: center; font-weight: 900; color: #ffffff;">
+                    <h1>EDIT PRODUCTS</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <div class="container">
+                    <div>
 
+                      <form method="post" actions="productUpdate" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-    <label for="name">Product Name:</label>
-    <input type="text" id="name" name="name" value="{{ob.name}}">
+                        <label for="name">Product Name:</label><br>
+                        <input type="text" id="checkNa" name="name" value="{{ob.name}}" pattern="^(?=.*[a-zA-Z])[a-zA-Z!@#$%^&*()_+\s-]+$" onblur="checkName()" required><br>
+                        <p id="Namealert" style="color: red;"></p>
+                        <label for="name">Select Category:</label><br>
+                        <select id="user-role" name="role" style="width: 40%;">
+                          <option>{{ob.Category}}</option>
+                          {% for item in categories %}
+                            {% if item.name != ob.Category %}
+                              <option>{{item.name}}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>                        
+                        <br>
+                        <label for="name">Vendor:</label><br>
+                        <input type="text" id="checkVen" name="vendor"  value="{{ob.vendor}}" pattern="^(?=.*[a-zA-Z])[a-zA-Z!@#$%^&*()_+\s-]+$" onblur="checkVender()"
+                          required><br>
+                          <p id="venderalert" style="color: red;"></p>
 
-    <label for="name">Category:</label>
-    <input type="text" id="name" name="category" value="{{ob.Category.name}}">
+                        <label for="name">Quantity:</label><br>
+                        <input type="text" id="qtyn" name="quantity" value="{{ob.quantity}}" onblur="checkQuantity()" required><br>
+                        <p id="qtyalert" style="color: red;"></p>
 
+                        <label for="name">Original Price:</label><br>
+                        <input type="text" id="orginalP" name="original_price" value="{{ob.original_price}}" onblur="checkOrginal()" required><br>
+                        <p id="Orginalalert" style="color: red;"></p>
+                        <label for="name">Selling Price:</label><br>
+                        <input type="text" id="Selling" name="selling_price" value="{{ob.selling_price}}" onblur="checkSelling()" required><br>
+                        <p id="Sellingalert" style="color: red;"></p>
+                        <label for="category-description">Category Description:</label><br>
+                        <textarea id="message" name="description" rows="5" cols="50" onblur="checkEmpty()"
+                          required>{{ob.description}}</textarea><br>
+                        <p id="descrip" style="color: red;"></p>
+                        <img id="preview-image" src="{{ob.product_image.url}}"  width="70" height="auto"><br>
+                        <label for="banner-image">Upload Image:</label><br>
+                        <input type="file" id="banner-image" name="image" accept="image/jpeg, image/png" onchange="previewImage(event)" ><br>
+                        <br>
+                        <button class="btn btn-info" type="submit">Save</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+      <!-- partial:partials/_footer.html -->
 
-    <label for="name">Vendor:</label>
-    <input type="text" id="name" name="Vendor" value="{{ob.vendor}}">
-
-
-    <label for="name">Ouantity:</label>
-    <input type="number" name="quantity" id="name" value="{{ob.quantity}}" min="0" max="100" pattern="\d+" oninput="this.value = Math.abs(this.value)">
-
-
-    <label for="name">Original Price:</label>
-    <input type="number"name="original_price" id="name" value="{{ob.original_price}}" min="0" max="" pattern="\d+" oninput="this.value = Math.abs(this.value)">
-
-
-    <label for="name">Selling Price:</label>
-    <input type="number" name="selling_price" id="name" value="{{ob.selling_price}}" min="0" max="" pattern="\d+" oninput="this.value = Math.abs(this.value)">
-
-    <label for="category-description">Category Description:</label>
-    <textarea id="category-description" name="description" value="{{ob.description}}"></textarea>
-    
-    <label for="banner-image">Upload Image:</label>
-    <input type="file" id="banner-image" name="image">
-    <button class="edit-button " type="submit">Save</button>
-  </form>
-</div>
-
-      </section>
-    </main>
+      <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
   </div>
+  <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- base:js -->
+  <script>
+    function checkQuantity() {
+      var input = document.getElementById("qtyn");
+      var value = input.value.trim();
+      if (/^[1-9]\d*$/.test(value)) {
+        // Valid positive integer
+        input.classList.remove("invalid");
+        $('#qtyalert').html(""); // Clear error message
+      } else {
+        // Invalid input
+        input.classList.add("invalid");
+        input.value = "";
+        $('#qtyalert').html("Please enter a positive integer greater than zero");
+      }
+    }
+    function checkOrginal() {
+      var input = document.getElementById("orginalP");
+      var value = input.value.trim();
+      if (/^[1-9]\d*$/.test(value)) {
+        // Valid positive integer
+        input.classList.remove("invalid");
+        $('#Orginalalert').html(""); // Clear error message
+      } else {
+        // Invalid input
+        input.classList.add("invalid");
+        input.value = "";
+        $('#Orginalalert').html("Please enter a positive integer greater than zero");
+      }
+    }
+    function checkSelling() {
+      var input = document.getElementById("Selling");
+      var value = input.value.trim();
+      if (/^[1-9]\d*$/.test(value)) {
+        // Valid positive integer
+        input.classList.remove("invalid");
+        $('#Sellingalert').html(""); // Clear error message
+      } else {
+        // Invalid input
+        input.classList.add("invalid");
+        input.value = "";
+        $('#Sellingalert').html("Please enter a positive integer greater than zero");
+      }
+    }
+    function checkEmpty() {
+      var message = document.getElementById("message").value;
+      if (message == "") {
+        $('#descrip').html("Description cannot be empty!");
+      } else {
+        var pattern = /^(?=.*[a-zA-Z])[a-zA-Z!@#$%^&*()_+\s-]+$/;
+        if (!message.match(pattern)) {
+
+          $('#descrip').html("Description format is invalid. Please enter only letters");
+        }
+      }
+    }
+    function checkName() {
+      var message = document.getElementById("checkNa").value;
+      if (message == "") {
+        $('#Namealert').html("Product name cannot be empty!");
+      } else {
+        var pattern = /^(?=.*[a-zA-Z])[a-zA-Z!@#$%^&*()_+\s-]+$/;
+        if (!message.match(pattern)) {
+
+          $('#Namealert').html("Product name format is invalid !");
+        }
+      }
+    }
+    function checkVender() {
+      var message = document.getElementById("checkVen").value;
+      if (message == "") {
+        $('#venderalert').html("Vender cannot be empty!");
+      } else {
+        var pattern = /^(?=.*[a-zA-Z])[a-zA-Z!@#$%^&*()_+\s-]+$/;
+        if (!message.match(pattern)) {
+
+          $('#venderalert').html("Vender name format is invalid !");
+        }
+      }
+    }
+
+
+  </script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <script src="../../vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="../../vendors/flot/jquery.flot.js"></script>
+  <script src="../../vendors/flot/jquery.flot.resize.js"></script>
+  <script src="../../vendors/chart.js/Chart.min.js"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="../../js/off-canvas.js"></script>
+  <script src="../../js/hoverable-collapse.js"></script>
+  <script src="../../js/template.js"></script>
+  <script src="../../js/settings.js"></script>
+  <script src="../../js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- plugin js for this page -->
+  <!-- End plugin js for this page -->
+  <!-- Custom js for this page-->
+  <script src="../../js/dashboard.js"></script>
+  <!-- End custom js for this page-->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+  <script>
+    function previewImage(event) {
+      var input = event.target;
+      var reader = new FileReader();
+    
+      reader.onload = function(){
+        var dataURL = reader.result;
+        var img = document.getElementById('preview-image');
+        img.src = dataURL;
+      };
+    
+      reader.readAsDataURL(input.files[0]);
+    }
+    </script>
+
 
 </body>
+
+
+<!-- Mirrored from www.bootstrapdash.com/demo/vanta/template/demo/Emerald/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 02 Apr 2023 17:11:49 GMT -->
+
 </html>

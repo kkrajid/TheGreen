@@ -103,6 +103,18 @@
 </div>
 <button type="submit" class="btn btn-success btn-lg rounded btn-block">Sign in</button>
 </form>
+<!-- my_template.html -->
+
+{% if messages %}
+    {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}" style="text-align: center; color: red; margin-top: 2%;" {% endif %}>
+            {{ message }}
+        </p>
+    {% endfor %}
+{% endif %}
+
+
+<!-- rest of the HTML goes here -->
 
 {% comment %} --------------------------------------------------------------------------------------------- {% endcomment %}
 <p class="text-muted text-center small m-0 py-3">or</p>

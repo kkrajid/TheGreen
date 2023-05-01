@@ -42,8 +42,10 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     mobile = models.CharField(max_length=20)
     mobile_verified = models.BooleanField(default=False)
+    is_blocked = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
 
     objects = CustomUserManager()
 
@@ -59,7 +61,7 @@ def getFileName(request,filename):
 class Category(models.Model):
     name = models.CharField(max_length=200,null=False,blank=False)
     image = models.ImageField(upload_to=getFileName,null=True,blank=True)
-    description = models.TextField(max_length=500,null=False,blank=False)
+    description = models.TextField(max_length=500,null=True,blank=True)
     status = models.BooleanField(default=False,help_text="0-show,1-Hidden")
     created_at = models.DateField(auto_now_add=True)
     delete_category = models.BooleanField(default=False)
@@ -86,6 +88,11 @@ class Products(models.Model):
 
     def __str__(self):
         return self.name
+    
+# class Images(models.Model):
+#     product = models.ForeignKey(Products, on_delete=models.CASCADE,null=True,blank=True)
+#     images =models.ImageField(upload_to=getFileName,null=True,blank=True) 
+
 
 
 
@@ -128,7 +135,7 @@ class Address(models.Model):
     delete_address = models.BooleanField(default=False)
 
 class Coupon(models.Model):
-    coupon_code = models.CharField(max_length=150,null=False,blank=False)
+    coupon_code = models.CharField(max_length=150,null=True,blank=True)
     is_expired = models.BooleanField(default=False)
     discount_price = models.IntegerField(null=False)
     min_amount = models.IntegerField(default=500)
@@ -136,7 +143,7 @@ class Coupon(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     address = models.ForeignKey(Address,on_delete=models.CASCADE)
-    coupon = models.ForeignKey(default=1,on_delete=models.CASCADE,to='Accounts.coupon')
+    coupon = models.ForeignKey(on_delete=models.CASCADE,to='Accounts.coupon',null=True,blank=True)
     total_price = models.FloatField(null=False)
     payment_mode = models.CharField(max_length=150,null=False)
     discount_price = models.DecimalField(decimal_places=2, default=0, max_digits=10)

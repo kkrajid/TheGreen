@@ -264,8 +264,8 @@ def placeorder(request):
         print('-----------------------------------------------------------')
         print(coupon_name)
         print('-----------------------------------------------------------')
-        coup = Coupon.objects.filter(id=coupon_name).first()
-        print(coup)
+        # coup = Coupon.objects.filter(id=coupon_name).first()
+        # print(coup)
         message=0
         
         try:

@@ -158,16 +158,16 @@ def customer(request):
         return redirect('home')
     
 
-@never_cache
-@login_required(login_url='GroceryAdmin')
-def update_page(request,u_id):
-    if request.user.is_superuser:
-        user = User.objects.get(id=u_id)
-        user.block = False
-        user.save()
-        return redirect('customer') 
-    else:
-        return redirect('home')
+# @never_cache
+# @login_required(login_url='GroceryAdmin')
+# def update_page(request,u_id):
+#     if request.user.is_superuser:
+#         user = User.objects.get(id=u_id)
+#         user.block = False
+#         user.save()
+#         return redirect('customer') 
+#     else:
+#         return redirect('home')
 
 
 
@@ -205,17 +205,17 @@ def createuser(request):
         return redirect('home')
     
 
-@never_cache
-@login_required(login_url='GroceryAdmin')
-def db_delete(request,userid):
-    if request.user.is_superuser:
-        if request.method == 'POST':
-            u = User.objects.get(id = userid)
-            u.block=True
-            u.save()
-            return redirect('customer')
-    else:
-        return redirect('home')
+# @never_cache
+# @login_required(login_url='GroceryAdmin')
+# def db_delete(request,userid):
+#     if request.user.is_superuser:
+#         if request.method == 'POST':
+#             u = User.objects.get(id = userid)
+#             u.is_blocked=True
+#             u.save()
+#             return redirect('customer')
+#     else:
+#         return redirect('home')
 
 
 
@@ -228,10 +228,10 @@ def productUpdate(request,u_id):
         if request.method == 'POST':
             prd = Products.objects.get(id=u_id)
             prd.name= request.POST['name']
-            category_name = request.POST['category']
+            category_name = request.POST['role']
             category_instance = Category.objects.get(name=category_name,delete_category=False)
             prd.Category = category_instance
-            prd.vendor = request.POST['Vendor']
+            prd.vendor = request.POST['vendor']
             prd.quantity = request.POST['quantity']
             prd.original_price = request.POST['original_price']
             prd.selling_price = request.POST['selling_price']
@@ -393,7 +393,7 @@ def categorycreate(request):
 @login_required(login_url='GroceryAdmin')
 def product(request):
     if request.user.is_superuser:
-        product= Products.objects.filter(delete_product=False,Category__delete_category=False).order_by('-id')
+        product= Products.objects.filter(delete_product=False,Category__delete_category=False).order_by('id')
         category=Category.objects.filter(delete_category = False)
         # paginator = Paginator(product, 5) # paginate products into 10 products per page
         # page = request.GET.get('page')

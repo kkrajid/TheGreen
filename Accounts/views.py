@@ -131,15 +131,22 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         user = auth.authenticate(email=email,password=password)
-
-        if user is not None and user.mobile_verified:
-            auth.login(request,user)
-            return redirect('Home')
-        
+        if user:
+            if user.is_blocked:
+                messages.info(request, 'Account is blocked.')
+                return render(request,'userAccount/login.html')
+            else:
+                if user is not None and user.mobile_verified:
+                    auth.login(request,user)
+                    return redirect('Home')
+                
+                else:
+                    messages.info(request,'Email not verified')
+                    return render(request,'userAccount/login.html')
         else:
-            messages.info(request,'Mobile Not verified')
-            
+            messages.info(request, 'user not exist')
             return render(request,'userAccount/login.html')
+
     
     else:
         if not request.user.is_authenticated:
