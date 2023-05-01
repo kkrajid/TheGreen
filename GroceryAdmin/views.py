@@ -155,20 +155,27 @@ def customer(request):
         user= User.objects.filter(is_superuser =False)
         return render(request,'gAdmin/customer.html',{'user':user})
     else:
-        return redirect('home')
+        return redirect('Home')
     
 
-# @never_cache
-# @login_required(login_url='GroceryAdmin')
-# def update_page(request,u_id):
-#     if request.user.is_superuser:
-#         user = User.objects.get(id=u_id)
-#         user.block = False
-#         user.save()
-#         return redirect('customer') 
-#     else:
-#         return redirect('home')
-
+def user_unblock(request, u_id):
+    if request.user.is_superuser:
+        user = User.objects.get(id=u_id)
+        user.is_blocked = False
+        user.save()
+        return redirect('customer')
+    else:
+        return redirect('Home')
+    
+@never_cache
+def user_blocked(request,u_id):
+    if request.user.is_superuser:
+        user = User.objects.get(id=u_id)
+        user.is_blocked = True
+        user.save()
+        return redirect('customer') 
+    else:
+        return redirect('Home')
 
 
 @never_cache

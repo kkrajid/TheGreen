@@ -158,20 +158,23 @@
                           <td>{{us.email}}</td>
                           <td>{{us.mobile}}</td>
                           <td>
-                            {% if us.is_blocked == False %}
+                            {% if us.is_blocked == True %}
                               <div class="button-wrapper">
-                                <a id="myButton2" class="btn btn-danger" type="submit" name="delete" href="db_delete/{{us.id}}">
+                                <a   class="btn btn-danger"  href="{% url 'user_unblock' us.id %}">
                                   Yes
                                   <div class="bullet red"></div>
                                 </a>
                               </div>
                             {% else%}
+                            <form action="{% url 'user_blocked' us.id %}" method="post" class="delete-form" >
+                              {% csrf_token %}
                             <div class="button-wrapper" style="margin-right: 4%">
-                              <a class="btn btn-white" href='update_page/{{us.id}}'>
+                              <button  class="btn btn-success" type="submit">
                                 NO
                                 <div class="bullet green"></div>
-                              </a>
+                              </button>
                             </div>
+                            </form>
                             {% endif %}
                           </td>
                         </tr>
@@ -196,6 +199,37 @@
   <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script>
+// Get all elements with the class "delete-form"
+const forms = document.querySelectorAll('.delete-form');
+
+// Loop through the forms and add the event listener
+forms.forEach(form => {
+  form.addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent the form from submitting normally
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Block it!',
+      customClass: {
+        title: 'text-danger',
+        content: 'text-danger'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // if the user clicks the confirm button, submit the form
+        form.submit();
+      }
+    });
+  });
+});
+
+
+  </script>
 
   <!-- base:js -->
   <script src="../../vendors/js/vendor.bundle.base.js"></script>
