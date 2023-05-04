@@ -207,42 +207,43 @@
               <div class="card">
                 <div class="card-body">
                   <div class="table-responsive dashboard-table-info">
+                    <input type="text" id="searchInput"  placeholder="Search for orders">
                     <table class="table center-aligned-table" id="myTable">
                       <thead>
-                        <tr>
-                          <th class="border-bottom-0">ID</th>
-                          <th class="border-bottom-0">Name</th>
-                          <th class="border-bottom-0">Order ID</th>
-                          <th class="border-bottom-0">Mobile</th>
-                          <th class="border-bottom-0">Zip</th>
-                          <th class="border-bottom-0">Total Bill</th>
-                          <th class="border-bottom-0">Pay Method</th>
-                          <th class="border-bottom-0">Order Date</th>
-                          <th class="border-bottom-0">Status</th>
-                          <th class="border-bottom-0">Edit Status</th>
-                        </tr>
+                          <tr>
+                              <th class="border-bottom-0">ID</th>
+                              <th class="border-bottom-0">Name</th>
+                              <th class="border-bottom-0">Order ID</th>
+                              <th class="border-bottom-0">Mobile</th>
+                              <th class="border-bottom-0">Zip</th>
+                              <th class="border-bottom-0">Total Bill</th>
+                              <th class="border-bottom-0">Pay Method</th>
+                              <th class="border-bottom-0">Order Date</th>
+                              <th class="border-bottom-0">Status</th>
+                              <th class="border-bottom-0">Edit Status</th>
+                          </tr>
                       </thead>
                       <tbody>
-                        {% for obj in order %}
+                          {% for obj in order %}
                           <tr>
-                            <td>{{obj.id}}</td>
-                            <td>{{obj.address.first_name}}</td>
-                            <td>{{obj.tracking_no}}</td>
-                            <td>{{obj.address.phone}}</td>
-                            <td>{{obj.address.pincode}}</td>
-                            <td>{{obj.total_price}}</td>
-                            <td>{{obj.payment_mode}}</td>
-                            <td>{{obj.created_at|date:"Y-m-d"}}</td>
-                            <td>{{obj.status}}</td>
-                            <td>
-                                <div class="nd" style="text-align: left; margin-bottom: 2%;">
-                                  <a class="btn btn-info" type="button" href="product_view_detail/{{obj.id}}">View</a>
-                                </div>
-                            </td>
+                              <td>{{obj.id}}</td>
+                              <td>{{obj.address.first_name}}</td>
+                              <td>{{obj.tracking_no}}</td>
+                              <td>{{obj.address.phone}}</td>
+                              <td>{{obj.address.pincode}}</td>
+                              <td>{{obj.total_price}}</td>
+                              <td>{{obj.payment_mode}}</td>
+                              <td>{{obj.created_at|date:"Y-m-d"}}</td>
+                              <td>{{obj.status}}</td>
+                              <td>
+                                  <div class="nd" style="text-align: left; margin-bottom: 2%;">
+                                      <a class="btn btn-info" type="button" href="product_view_detail/{{obj.id}}">View</a>
+                                  </div>
+                              </td>
                           </tr>
                           {% endfor %}
                       </tbody>
-                    </table>
+                  </table>
                   </div>
                 </div>
               </div>
@@ -297,13 +298,17 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-  <Script>
+  <script>
     let table = new DataTable('#myTable', {
-      "lengthMenu": [[4, 6, -1], [4, 6]],
-      "order": [[0, "desc"]]
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "order": [[0, "desc"]]
     });
-    
-  </Script>
+
+    // Add search functionality
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        table.search(this.value).draw();
+    });
+</script>
 </body>
 
 

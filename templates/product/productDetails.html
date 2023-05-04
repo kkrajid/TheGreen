@@ -518,18 +518,15 @@
     <input type="hidden" value="{{products.id}}" class="prod_id">
     <div class="col-lg-6">
         <div class="recommend-slider mb-5 " style="margin-bottom: 20%; margin-top: 10%;">
+          {% if products.images.all %}
+          {% for image in products.images.all %}
             <div class="osahan-slider-item">
-                <img src="{{products.product_image.url}}" class="img-fluid mx-auto shadow-sm rounded"
+                <img src="{{image.image.url}}" class="img-fluid mx-auto shadow-sm rounded"
                     alt="Responsive image">
             </div>
-            <div class="osahan-slider-item">
-                <img src="{{products.product_image.url}}" class="img-fluid mx-auto shadow-sm rounded"
-                    alt="Responsive image">
-            </div>
-            <div class="osahan-slider-item">
-                <img src="{{products.product_image.url}}" class="img-fluid mx-auto shadow-sm rounded"
-                    alt="Responsive image">
-            </div>
+            {% endfor %}
+            {% endif %}
+           
         </div>
         {% if products.quantity > 0 %}
         <div class="pd-f d-flex align-items-center mb-3">

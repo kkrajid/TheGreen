@@ -162,6 +162,7 @@ def update_cart(request):
             cart.save()
             cartItemS = cartItems.objects.filter(user= request.user)
             total_price = 0
+            del request.session['coupon_in']
             for item in cartItemS:
                 total_price= total_price + item.products.selling_price*item.product_qty  
             response = {
@@ -190,17 +191,33 @@ def checkout(request):
         user_address = None
     unique_addresses = Address.objects.filter(user=request.user,delete_address=False).order_by("-defaults")
 
-
+    
     cartItem = cartItems.objects.filter(user=request.user)
     for item in cartItem:
         total_price = total_price + item.products.selling_price*item.product_qty
+        
+    coupon = request.session.get('coupon_in', None)
+    print(coupon)
+    if coupon != '':
+        try:       
+            total_price_se =total_price
+            coupon_user = Coupon.objects.get(coupon_code=coupon)
+            if total_price_se> coupon_user.discount_price:
+                total_price_se -=coupon_user.discount_price
+                discount = coupon_user.discount_price
+                print(discount)
+        except:
+            total_price_se = 0
+            discount = 0
 
     context = {
     'cartItemS': cartItem,
     'total_price': total_price,
     'adds': unique_addresses,
     'user_address': user_address,
-    'total_wallet_amount':total_wallet_amount
+    'total_wallet_amount':total_wallet_amount,
+    'total_price_se':total_price_se,
+    'discount':discount
    }      
     return render(request, 'product/checkout.html', context)
 
@@ -248,6 +265,7 @@ def checkout_add_address(request):
 def placeorder(request):
     if request.method == 'POST':
         user_address = Address.objects.get(user=request.user,defaults=True,delete_address=False)
+        
         new_order = Order()
         new_order.user = request.user
         new_order.address=user_address
@@ -260,7 +278,7 @@ def placeorder(request):
         for item in cart:
             cart_total_price += item.products.selling_price*item.product_qty
 #------------------------------------------------------------------------------------------------
-        coupon_name = request.POST.get('coupon_name')
+        coupon_name = request.session.get('coupon_in', None)
         print('-----------------------------------------------------------')
         print(coupon_name)
         print('-----------------------------------------------------------')
@@ -269,17 +287,17 @@ def placeorder(request):
         message=0
         
         try:
-            coup = Coupon.objects.filter(id=coupon_name).first()
+            coup = Coupon.objects.get(coupon_code=coupon_name)
 
             if coup :
-                rd = Order.objects.filter(user=request.user,coupon_id =coupon_name)
+                rd = Order.objects.filter(user=request.user,coupon_id =coup.id)
                 if rd:
                     message = 'Coupon already taken'
                 else:
                     if cart_total_price > coup.discount_price:
                         discou =cart_total_price- coup.discount_price
                         discount = discou
-                        new_order.coupon_id = int(coupon_name)
+                        new_order.coupon_id = int(coup.id)
                         message = 'Coupon added'
                     else:
                         message = 'Buy above '+str(coup.discount_price)
@@ -287,7 +305,6 @@ def placeorder(request):
                 message = 'invalid coupon'
         except:
             pass
-
         # if not Coupon.objects.filter(coupon_code=coupon_name).exists():
         #     message = 'invalid coupon'
         # else:
@@ -332,6 +349,10 @@ def placeorder(request):
         new_order.tracking_no = trackno
         new_order.created_at=datetime.now().time()
         new_order.save()
+        try:
+            del request.session['coupon_in']
+        except:
+            pass
         new_order_items = cartItems.objects.filter(user=request.user)
         print(new_order_items)
         print(new_order)
@@ -442,12 +463,13 @@ def searchproduct(request):
         if len(productsList) > 0:
             data = []
             for item in productsList:
+                first_image = item.images.first()
                 data.append({
                     'id': item.id,
                     'name': item.name,
                     'category': item.Category.name,
                     'description': item.description,
-                    'image': str(item.product_image.url),
+                    'image': str(first_image.image.url) if first_image else '',
                 })
             return JsonResponse(data, safe=False)
         else:
@@ -708,6 +730,7 @@ def coupon_discount(request):
                     if total_price > coupon_user.discount_price:
                         total_price -=coupon_user.discount_price
                         message = 'Coupon added'
+                        request.session['coupon_in'] = val
                     else:
                         message = 'Buy above '+str(coupon_user.discount_price)
 

@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib import messages
@@ -243,11 +243,13 @@ def productUpdate(request,u_id):
             prd.original_price = request.POST['original_price']
             prd.selling_price = request.POST['selling_price']
             prd.description = request.POST['description']
-            if 'image' in request.FILES and len(request.FILES['image']) > 0:
-                img =  request.FILES['image']
-                prd.product_image = img
-                print(request.FILES['image'])
             prd.save()
+            if 'images' in request.FILES and len(request.FILES['images']) > 0:
+                images = request.FILES.getlist('images')
+                for image in images:
+                    img = Image.objects.create(image=image)
+                    prd.images.add(img)
+                    
             return redirect('product')
         else:
             prd = Products.objects.get(id=u_id)
@@ -284,10 +286,8 @@ def pcreate(request):
             original_price = request.POST['original_price']
             selling_price = request.POST['selling_price']
             description = request.POST['description']
-            image = request.FILES['image']
             category, created = Category.objects.get_or_create(name=role,delete_category=False)
             prd = Products(name=name,
-               product_image=image,
                Category=category,
                quantity=quantity,
                vendor=vendor,
@@ -296,6 +296,11 @@ def pcreate(request):
                description=description
 )
             prd.save()
+            images = request.FILES.getlist('images')
+            for image in images:
+                # Create the Image instance and add it to the product's M2M field
+                img = Image.objects.create(image=image)
+                prd.images.add(img)
             return redirect('product')
         context = {
             'categories': categories,
@@ -424,7 +429,11 @@ def product(request):
 
 
 
-
+def delete_image(request, product_id, image_id):
+    product = get_object_or_404(Products, id=product_id)
+    image = get_object_or_404(Image, id=image_id)
+    image.delete()
+    return redirect('productUpdate',product_id)
 
 
 

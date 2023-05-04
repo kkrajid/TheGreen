@@ -432,6 +432,7 @@ let table = new DataTable('#myTable', {
         doc.content[1].table.body.push([{ text: 'Total Amount', style:{fontSize: 10,bold: true,color: 'white',fillColor: '#4CAF50'} }, { text: '$' + total.toFixed(2), colSpan: 5, alignment: 'right', style: 'tableHeader' }, {}, {}, {}, {}]);
       }
     },
+     
     {
       extend: 'excelHtml5',
       title: 'Your Excel Title',

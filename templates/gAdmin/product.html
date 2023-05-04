@@ -231,7 +231,10 @@
                           <td>{{obj.quantity}}</td>
                           <td>{{obj.original_price}}</td>
                           <td>{{obj.selling_price}}</td>
-                          <td><img src="{{obj.product_image.url}}" alt="example image" width="70" height="50"></td>
+                          <td>
+                            {% for image in obj.images.all|slice:":1" %}
+                            <img src="{{image.image.url}}" alt="example image" width="70" height="50"></td>
+                            {% endfor %}
                           <td>
                             <div class="row" style="display: flex;">
                               <div class="button-wrapper" style="margin-right: 4%">

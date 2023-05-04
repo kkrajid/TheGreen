@@ -72,6 +72,21 @@
     input.invalid {
       border: 2px solid red;
     }
+    .delete-btn {
+      left: 78%;
+    position: absolute;
+    display: inline-block;
+    background-color: #f44336;
+    color: white;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1;
+}
+
+
   </style>
 </head>
 
@@ -198,9 +213,23 @@
                         <textarea id="message" name="description" rows="5" cols="50" onblur="checkEmpty()"
                           required>{{ob.description}}</textarea><br>
                         <p id="descrip" style="color: red;"></p>
-                        <img id="preview-image" src="{{ob.product_image.url}}"  width="70" height="auto"><br>
+                      <div class="container">
+                        <div class="row mt-2 d-flex ">
+
+                          {% if ob.images.all %}
+                              {% for image in ob.images.all %}
+                                  <div class="col-2" style="margin-right: 2px;">
+                                    <img id="preview-image" class="img-fluid" src="{{ image.image.url }}" >
+                                    <a href="{% url 'delete_image' ob.id image.id %}" class="delete-btn">&#10006;</a>
+                              </div>
+                            
+                             
+                              {% endfor %}
+                            {% endif %}
+                            </div>
+                      </div>
                         <label for="banner-image">Upload Image:</label><br>
-                        <input type="file" id="banner-image" name="image" accept="image/jpeg, image/png" onchange="previewImage(event)" ><br>
+                        <input type="file" id="banner-image" name="images" accept="image/jpeg, image/png" onchange="previewImage(event)" multiple  ><br>
                         <br>
                         <button class="btn btn-info" type="submit">Save</button>
                       </form>

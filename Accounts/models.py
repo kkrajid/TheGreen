@@ -69,13 +69,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-
+class Image(models.Model):
+    image = models.ImageField(upload_to=getFileName, null=True, blank=True)
+    alt_text = models.CharField(max_length=100, null=True, blank=True)
 
 class Products(models.Model):
     Category = models.ForeignKey(Category,on_delete=models.CASCADE)
     name = models.CharField(max_length=200,null=False,blank=False)
     vendor = models.CharField(max_length=200,null=False,blank=False)
-    product_image = models.ImageField(upload_to=getFileName,null=True,blank=True)
+    images = models.ManyToManyField(Image, blank=True)
     quantity = models.IntegerField(null=False,blank=False)
     original_price = models.FloatField(null=False,blank=False)
     selling_price = models.FloatField(null=False,blank=False)

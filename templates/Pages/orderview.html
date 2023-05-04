@@ -85,7 +85,13 @@
                                         <td>{{item.product.name}}</td>
                                         <td>{{item.quantity}}</td>
                                         <td>{{item.price}}</td>
-                                        <td> <img src=" {{item.product.product_image.url}}" height="50px" width="50px" alt="Product image"></td>
+                                        <td> 
+                                          {% if item.product.images.all %}
+                                            {% for image in item.product.images.all|slice:":1" %}
+                                            <img src=" {{image.image.url}}" height="50px" width="50px" alt="Product image">
+                                            {% endfor %}
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

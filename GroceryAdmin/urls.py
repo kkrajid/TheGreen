@@ -43,4 +43,6 @@ urlpatterns = [
 
     path('add_coupon',views.add_coupon,name='add_coupon'),
     path('logout_view', views.logout_view,name='logout_view'),
+
+    path('product/<int:product_id>/image/<int:image_id>/delete/', views.delete_image, name='delete_image'),
 ]

@@ -61,7 +61,11 @@
                         <div class="member-plan position-absolute"><span class="badge m-3 badge-danger">10%</span>
                         </div>
                         <div class="p-3">
-                          <img src="{{item.product_image.url}}" class="img-fluid item-img w-100 mb-3">
+                          {% if item.images.all %}
+                          {% for image in item.images.all|slice:":1" %}
+                          <img src="{{image.image.url}}" class="img-fluid item-img w-100 mb-3">
+                          {% endfor %}
+                          {% endif %}
                           <h6>{{item.name}}</h6>
                           <div class="d-flex align-items-center">
                             <h6 class="price m-0 text-success">₹ {{item.selling_price}}/kg</h6>
