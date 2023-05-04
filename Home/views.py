@@ -222,7 +222,12 @@ def checkout(request):
     return render(request, 'product/checkout.html', context)
 
 
-
+# def cart_total_amount(request):
+#     total_amount = 0
+#     cart = cartItems.objects.filter(user = request.user)
+#     for item in cart:
+#         total_amount += item.
+#     return JsonResponse({'total':})
 
 @login_required(login_url='login')
 def default_set(request,def_id):
