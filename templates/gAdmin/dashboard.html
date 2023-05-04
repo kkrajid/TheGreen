@@ -348,7 +348,7 @@ button.dt-button, div.dt-button, a.dt-button, input.dt-button{
 
   <Script>
    let total = 0; // declare the variable outside of the function
-
+   let pdfButtonClicked = false;
 let table = new DataTable('#myTable', {
   "lengthMenu": [[4, 6, -1], [4, 6]],
   ordering: false,
@@ -452,52 +452,53 @@ let table = new DataTable('#myTable', {
     $('#totalAmount').text('$' + total.toFixed(2));
 
     // Add the date range filter inputs
-    $('<div class="row mb-2"><div class="col-md-2"><label for="from">From:</label><input type="date" id="from" class="form-control" placeholder="YYYY-MM-DD"></div><div class="col-md-2"><label for="to">To:</label><input type="date" id="to" class="form-control" placeholder="YYYY-MM-DD"></div></div>').insertBefore('#myTable_wrapper');
+    $('<div class="row mb-2"><div class="col-md-3"><label for="filterType">Filter By:</label><select id="filterType" class="form-control"><option value="day">Day</option><option value="month">Month</option><option value="year">Year</option></select></div><div class="col-md-3"><label for="filterValue">Filter Value:</label><input type="text" id="filterValue" class="form-control" placeholder="YYYY-MM-DD or YYYY-MM"></div></div>').insertBefore('#myTable_wrapper');
 
     // Add the event listener to the date range filter inputs
     
 // Add the event listener to the date range filter inputs
-    $('#from, #to').change(function() {
-      let from = $('#from').val();
-      let to = $('#to').val();
-      table.draw();
+  $('#filterType, #filterValue').change(function() {
+    table.draw();
 
-      // Recalculate the total amount
-      let total = api.column(5, { search: 'applied' }).data().reduce(function(acc, val) {
-        return acc + parseFloat(val);
-      }, 0);
-      $('#totalAmount').text('$' + total.toFixed(2));
-    });
+    // Recalculate the total amount
+    total = api.column(5, { search: 'applied' }).data().reduce(function(acc, val) {
+      return acc + parseFloat(val);
+    }, 0);
+    $('#totalAmount').text('$' + total.toFixed(2));
+    table.button(0).trigger(); // trigger the PDF button to update the PDF with the new total value
+  });
+
+
 
   }
 });
-
 // Add the custom filtering function
 $.fn.dataTable.ext.search.push(
   function(settings, data, dataIndex) {
-    let from = $('#from').val();
-    let to = $('#to').val();
+    let filterType = $('#filterType').val();
+    let filterValue = $('#filterValue').val();
     let date = data[0]; // Assumes the date is in the first column of the table
 
-    if (from === '' && to === '') {
+    if (filterValue === '') {
       return true;
     }
 
-    if (from === '' && date <= to) {
+    if (filterType === 'day' && date === filterValue) {
       return true;
     }
 
-    if (to === '' && date >= from) {
+    if (filterType === 'month' && date.slice(0, 7) === filterValue) {
       return true;
     }
 
-    if (date >= from && date <= to) {
+    if (filterType === 'year' && date.slice(0, 4) === filterValue) {
       return true;
     }
 
     return false;
   }
 );
+
 
 
     
