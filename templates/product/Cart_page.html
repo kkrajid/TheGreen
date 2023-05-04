@@ -394,5 +394,18 @@
 
   }
 </script>
+<script>
+  $(document).ready(function () {
+    setInterval(function() {
+      $.ajax({
+        method: "GET",
+        url: "cart_total_amount",
+        success: function (response) {
+          $('.ored').text(response.total)
+        }
+      });
+    }, 1000); // call the function every 1000 milliseconds (1 second)
+  });
+</script>
 
 {% endblock content %}

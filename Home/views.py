@@ -18,7 +18,7 @@ from xhtml2pdf import pisa
 from django.db.models import Q
 from django.template.loader import render_to_string
 
-
+@never_cache
 @login_required(login_url='login')
 def base(request):
     count = cartItems.objects.filter(user=request.user).count()
@@ -27,7 +27,7 @@ def base(request):
     'count':count 
     }
     return JsonResponse(response)
-
+@never_cache
 @login_required(login_url='login')
 def Home(request):
     count = cartItems.objects.filter(user=request.user).count()
@@ -40,14 +40,14 @@ def Home(request):
 
 
 
-
+@never_cache
 @login_required(login_url='login')
 def Categories(request):
     count = cartItems.objects.filter(user=request.user).count()
     category = Category.objects.filter(status=0,delete_category =False)
     return render(request,'Pages/categories.html',{'category':category,'count':count})
 
-
+@never_cache
 @login_required(login_url='login') 
 def CategoriesView(request,name):
     if (Category.objects.filter(status=0,name=name,delete_category =False)):
@@ -57,7 +57,7 @@ def CategoriesView(request,name):
     else:
         messages.warning(request,"No Such Category Found")
         return redirect('Categories')
-
+@never_cache
 @login_required(login_url='login')   
 def ProductDetails(request,categoryName,productName):
     count = cartItems.objects.filter(user=request.user).count()
@@ -75,7 +75,7 @@ def ProductDetails(request,categoryName,productName):
         return redirect('Categories')
 
 
-
+@never_cache
 @login_required
 def add_to_cart(request):
     count = cartItems.objects.filter(user=request.user).count()
@@ -124,7 +124,7 @@ def add_to_cart(request):
                     }
         return JsonResponse(response)
 
-
+@never_cache
 @login_required(login_url='login')  
 def Cart_page(request):
     cart_list = cartItems.objects.filter(user = request.user)
@@ -138,7 +138,7 @@ def Cart_page(request):
         total_price= total_price + item.products.selling_price*item.product_qty     
     return render(request,'product/Cart_page.html',{'cart_list':cart_list, 'total_price':total_price,})
 
-
+@never_cache
 @login_required(login_url='login')
 def  delete_cart_item(request):
     if request.method == "POST":
@@ -150,7 +150,7 @@ def  delete_cart_item(request):
             return JsonResponse({"status":"delete successfully","count":count})
     return redirect('Cart_page')
 
-
+@never_cache
 @login_required(login_url='login')
 def update_cart(request):
     if request.method == 'POST':
@@ -174,7 +174,7 @@ def update_cart(request):
 
 
 
-
+@never_cache
 @login_required(login_url='login')
 def checkout(request):
     cartItem = cartItems.objects.filter(user=request.user)
@@ -221,14 +221,14 @@ def checkout(request):
    }      
     return render(request, 'product/checkout.html', context)
 
-
-# def cart_total_amount(request):
-#     total_amount = 0
-#     cart = cartItems.objects.filter(user = request.user)
-#     for item in cart:
-#         total_amount += item.
-#     return JsonResponse({'total':})
-
+@never_cache
+def cart_total_amount(request):
+    total_amount = 0
+    cart = cartItems.objects.filter(user = request.user)
+    for item in cart:
+        total_amount += item.product_qty*item.products.selling_price
+    return JsonResponse({'total':total_amount})
+@never_cache
 @login_required(login_url='login')
 def default_set(request,def_id):
     address_in = Address.objects.get(id = def_id,user=request.user)
@@ -243,7 +243,7 @@ def default_set(request,def_id):
 
     return redirect('checkout')
 
-
+@never_cache
 @login_required(login_url='login')
 def checkout_add_address(request):
     if request.method == 'POST':
@@ -265,7 +265,7 @@ def checkout_add_address(request):
 
 
 
-
+@never_cache
 @login_required(login_url='login')
 def placeorder(request):
     if request.method == 'POST':
@@ -384,7 +384,7 @@ def placeorder(request):
 
     else:
         return redirect('Home')
-
+@never_cache
 @login_required(login_url='login')  
 def razorpay(request):
     cart = cartItems.objects.filter(user = request.user)
@@ -402,7 +402,7 @@ def razorpay(request):
     }
     return JsonResponse(response)
 
-
+@never_cache
 @login_required(login_url='login')
 def my_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at','updated_at')
@@ -411,7 +411,7 @@ def my_orders(request):
     }
     return render(request,'Pages/my_orders.html',context)
 
-
+@never_cache
 @login_required(login_url='login')
 def orderview(request,tracking_no):
     order = Order.objects.filter(tracking_no=tracking_no).filter(user=request.user).first()
@@ -423,13 +423,13 @@ def orderview(request,tracking_no):
     return render(request,'Pages/orderview.html',context)
 
 
-
+@never_cache
 @login_required(login_url='login')
 def successful(request):
     user = User.objects.get(id=request.user.id)
     return render(request,'Pages/successful.html',{'user':user})
 
-
+@never_cache
 @login_required(login_url='login')
 def cancel_order(request,order_id):
     orderite = Orderitem.objects.filter(order_id=order_id)
@@ -443,7 +443,7 @@ def cancel_order(request,order_id):
     orders.save()
     traking = orders.tracking_no
     return redirect('orderview',traking)
-
+@never_cache
 @login_required(login_url='login')
 def returnorder(request,order_id):
     orders = Order.objects.get(id=order_id)
@@ -452,13 +452,13 @@ def returnorder(request,order_id):
     orders.save()
     traking = orders.tracking_no
     return redirect('orderview',traking)
-
+@never_cache
 @login_required(login_url='login')
 def product_list(request):
     products = Products.objects.filter(status = 0,delete_product =False).values_list('name',flat=True)
     productList = list(products)
     return JsonResponse(productList,safe=False)
-
+@never_cache
 @login_required(login_url='login')
 def searchproduct(request):
     if request.method == 'POST':
@@ -577,7 +577,7 @@ def searchproduct(request):
 #     }
 #     return render(request,'product/allproducts.html', context)
 
-
+@never_cache
 @login_required(login_url='login')
 def allproducts(request):
     categories = Category.objects.filter(delete_category=False)
@@ -617,7 +617,7 @@ def allproducts(request):
     return render(request, 'product/allproducts.html', context)
 
 
-
+@never_cache
 @login_required(login_url='login')
 def walletDetails(request):
     user_wallet = wallet.objects.filter(user = request.user)
@@ -629,7 +629,7 @@ def walletDetails(request):
     }
     return render(request,'userAccount/wallet.html',context)
 
-
+@never_cache
 @login_required(login_url='login')
 def pdf_invoice(request,tracking_no):
     order = Order.objects.filter(tracking_no=tracking_no).filter(user=request.user).first()
@@ -662,7 +662,7 @@ def pdf_invoice(request,tracking_no):
 
 
 
-
+@never_cache
 @login_required(login_url='login')
 def listing(request):
     categories = Category.objects.filter(delete_category=False)
@@ -704,7 +704,7 @@ def listing(request):
 
 
 
-
+@never_cache
 def coupon_discount(request):
     if request.method  == 'POST':
         if request.POST.get('couponValue') != 'NaN':

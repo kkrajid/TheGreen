@@ -44,6 +44,7 @@ urlpatterns = [
 
 
     path('listing', views.listing,name="listing" ),
+    path('cart_total_amount', views.cart_total_amount,name="cart_total_amount" ),
     
 
     path('coupon_discount',views.coupon_discount,name="coupon_discount" ),
